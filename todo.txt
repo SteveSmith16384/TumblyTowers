@@ -1,0 +1,19 @@
+TODO
+lShape not right
+make all shapes the same bounciness
+Use ints to check pos
+Set positioning for multiple players
+Stop players shapes moving over enemy shapes
+	spin l/r
+	Move and rotate directly, not through forces
+	Check if piece fallen through floor
+	Check for winner
+
+
+LATER
+Make shapes diff colours
+Earthquake
+More types of shape
+Exploding bombs
+Sides widen over time
+Bouncy shapes

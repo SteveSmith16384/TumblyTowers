@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="jbox2d-library/src/main/java"/>
+	<classpathentry kind="src" path="gamepad4j-api/src/main/java"/>
+	<classpathentry kind="src" path="gamepad4j-desktop/src/main/java"/>
+	<classpathentry kind="src" path="gamepad4j-desktop/src/main/resources"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

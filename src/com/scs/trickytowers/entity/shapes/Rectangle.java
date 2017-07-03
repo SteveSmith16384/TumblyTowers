@@ -1,0 +1,22 @@
+package com.scs.trickytowers.entity.shapes;
+
+import java.awt.Color;
+
+import org.jbox2d.dynamics.BodyType;
+
+import com.scs.trickytowers.BodyUserData;
+import com.scs.trickytowers.JBox2DFunctions;
+import com.scs.trickytowers.Main;
+
+public class Rectangle extends AbstractShape {
+	
+	public Rectangle(Main _main, float width, float height, float sx) {
+		super(_main, "Rectangle");
+
+		BodyUserData bud = new BodyUserData("Rectangle", Color.cyan, this);
+
+		body = JBox2DFunctions.AddRectangle(bud, main.world, sx, 0, width, height, BodyType.DYNAMIC,  .01f, 1f, .5f);
+	}
+
+	
+}
