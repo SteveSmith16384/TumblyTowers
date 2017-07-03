@@ -13,9 +13,6 @@ import com.scs.trickytowers.entity.shapes.Rectangle;
 
 public class PlayerInputSystem {
 
-	//private static final float FORCE = 10000;
-	//private static final float TORQUE_FORCE = 100000f;
-
 	private Main main;
 
 	public PlayerInputSystem(Main _main) {
@@ -25,23 +22,23 @@ public class PlayerInputSystem {
 
 	public void process(Player player) {
 		if (player.currentShape != null && player.currentShape.body != null) { // body is null if shape dropped of bottom
-			if (player.currentShape.body.getWorldCenter().equals(player.prevPos) == false) { // Still moving
-				player.prevPos.set(player.currentShape.body.getWorldCenter());
+			if (player.currentShape.body.getWorldCenter().y > player.prevY) { // Still moving
+				player.prevY = player.currentShape.body.getWorldCenter().y;
 				if (player.currentShape.collided == false) {
 					Vec2 newPos = new Vec2(player.currentShape.body.getWorldCenter());
 					float newAngle = player.currentShape.body.getAngle();
 					if (player.input.isLeftPressed()) {
-						newPos.x--;
-						//player.currentShape.body.applyForceToCenter(new Vec2(-FORCE, 0));
+						if (player.currentShape.body.getWorldCenter().x > main.getLeftBucketPos(player.id_ZB)) {
+							newPos.x--;
+						}
 					} else if (player.input.isRightPressed()) {
-						//player.currentShape.body.applyForceToCenter(new Vec2(FORCE, 0));
+						if (player.currentShape.body.getWorldCenter().x < main.getRightBucketPos(player.id_ZB)) {
 						newPos.x++;
+						}
 					} else if (player.input.isUpPressed()) {
 						newAngle -= 0.1f;
-						//player.currentShape.body.applyTorque(TORQUE_FORCE);
 					} else if (player.input.isDownPressed()) {
 						newAngle += 0.1f;
-						//player.currentShape.body.applyForceToCenter(new Vec2(0, FORCE));
 					}
 					player.currentShape.body.setTransform(newPos, newAngle);
 				}

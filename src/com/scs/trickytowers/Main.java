@@ -21,9 +21,11 @@ import org.jbox2d.dynamics.contacts.Contact;
 
 import ssmith.awt.ImageCache;
 import ssmith.util.TSArrayList;
+import ssmith.util.TimedString;
 
 import com.scs.trickytowers.entity.Edge;
 import com.scs.trickytowers.entity.Entity;
+import com.scs.trickytowers.entity.VibratingPlatform;
 import com.scs.trickytowers.entity.components.ICollideable;
 import com.scs.trickytowers.entity.components.IDrawable;
 import com.scs.trickytowers.entity.components.IProcessable;
@@ -48,6 +50,7 @@ public class Main implements ContactListener, NewControllerListener, KeyListener
 	private boolean restartLevel = false;
 	private int[] leftPos;
 	private int[] rightPos;
+	private TimedString msg = new TimedString(2000);
 
 
 	public static void main(String[] args) {
@@ -88,18 +91,25 @@ public class Main implements ContactListener, NewControllerListener, KeyListener
 		final int positionIterations = 4;//3;//2;
 
 		while (window.isVisible()) {
-			
+
 			// Check for new players
 			synchronized (newControllers) {
 				while (this.newControllers.isEmpty() == false) {
 					if (this.players.size() < 3) {
-					this.loadPlayer(this.newControllers.remove(0));
+						this.loadPlayer(this.newControllers.remove(0));
 					} else {
 						this.newControllers.clear();
-						// todo - show "no room left"
+						msg.setText("No room left!");
 					}
 				}
 			}
+
+			if (restartLevel) {
+				restartLevel = false;
+				this.startLevel();
+			}
+			
+			msg.process(interpol);
 
 			this.entities.refresh();
 
@@ -132,6 +142,7 @@ public class Main implements ContactListener, NewControllerListener, KeyListener
 			g.fillRect(0, 0, Statics.WINDOW_WIDTH, Statics.WINDOW_HEIGHT);
 
 			g.setColor(Color.black);
+			g.drawString(msg.getString(), 20, 50);
 			g.drawString("Num Entities: " + this.entities.size(), 20, 70);
 
 			g.setColor(Color.gray);
@@ -149,11 +160,6 @@ public class Main implements ContactListener, NewControllerListener, KeyListener
 				}
 			}
 			drawingSystem.endOfDrawing();
-
-			if (restartLevel) {
-				restartLevel = false;
-				this.startLevel();
-			}
 
 			window.BS.show();
 
@@ -175,33 +181,38 @@ public class Main implements ContactListener, NewControllerListener, KeyListener
 		world = new World(gravity);
 		world.setContactListener(this);
 
-		// Create edges
-		float width = Statics.WORLD_WIDTH_LOGICAL/4;
-		Edge leftEdge = new Edge(this, Statics.WORLD_WIDTH_LOGICAL/2-(width/2), (float)(Statics.WORLD_HEIGHT_LOGICAL/2), Statics.WORLD_WIDTH_LOGICAL/2-(width/2), (float)(Statics.WORLD_HEIGHT_LOGICAL-10));
-		this.addEntity(leftEdge);
-		Edge rightEdge = new Edge(this, Statics.WORLD_WIDTH_LOGICAL/2+(width/2), (float)(Statics.WORLD_HEIGHT_LOGICAL-10), Statics.WORLD_WIDTH_LOGICAL/2+(width/2), (float)(Statics.WORLD_HEIGHT_LOGICAL/2));
-		this.addEntity(rightEdge);
-		Edge bottom = new Edge(this, Statics.WORLD_WIDTH_LOGICAL/2-(width/2), (float)(Statics.WORLD_HEIGHT_LOGICAL-10), Statics.WORLD_WIDTH_LOGICAL/2+(width/2), (float)(Statics.WORLD_HEIGHT_LOGICAL-10));
+		Edge bottom = new Edge(this, 0, (float)(Statics.WORLD_HEIGHT_LOGICAL-10), Statics.WORLD_WIDTH_LOGICAL, (float)(Statics.WORLD_HEIGHT_LOGICAL-10));
 		this.addEntity(bottom);
-		
+
 		// Create avatars
 		leftPos = new int[this.players.size()];
 		rightPos = new int[this.players.size()];
 		float secWidth = Statics.WORLD_WIDTH_LOGICAL/(this.players.size()+1);
-		float bucketWidth = Statics.WORLD_WIDTH_LOGICAL/5;
-		
+		float bucketWidth = Statics.WORLD_WIDTH_LOGICAL/4;
+
 		int i=1;
 		for (Player player : this.players) {
 			player.currentShape = null;
 			leftPos[i-1] = (int)((secWidth*i)-(bucketWidth/2));
 			rightPos[i-1] = (int)((secWidth*i)+(bucketWidth/2));
+
+			// Create edges
+			Edge leftEdge = new Edge(this, this.getLeftBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL/2), this.getLeftBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL-10));
+			this.addEntity(leftEdge);
+			
+			Edge rightEdge = new Edge(this, this.getRightBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL-10), this.getRightBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL/2));
+			this.addEntity(rightEdge);
+			
+			VibratingPlatform v = new VibratingPlatform(this, this.getCentreBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL-20), bucketWidth*0.9f);
+			this.addEntity(v);
+			
 			i++;
 		}
-		
+
 
 	}
-	
-	
+
+
 	public int getLeftBucketPos(int playernum) {
 		return leftPos[playernum];
 	}
@@ -210,6 +221,12 @@ public class Main implements ContactListener, NewControllerListener, KeyListener
 	public int getRightBucketPos(int playernum) {
 		return rightPos[playernum];
 	}
+
+
+	public int getCentreBucketPos(int playernum) {
+		return (leftPos[playernum] + rightPos[playernum])/2;
+	}
+
 
 
 	private void processCollision(Contact contact) {
@@ -269,13 +286,8 @@ public class Main implements ContactListener, NewControllerListener, KeyListener
 	}
 
 
-
 	public void removeEntity(Entity b) {
 		b.cleanup(world);
-		/*if (b instanceof PhysicalEntity) {
-			PhysicalEntity pe = (PhysicalEntity)b;
-			world.destroyBody(pe.body);
-		}*/
 
 		synchronized (entities) {
 			this.entities.remove(b);
@@ -292,7 +304,7 @@ public class Main implements ContactListener, NewControllerListener, KeyListener
 
 
 	private void loadPlayer(IInputDevice input) {
-		Player player = new Player(input);
+		Player player = new Player(this, input);
 		synchronized (players) {
 			this.players.add(player);
 		}
@@ -344,9 +356,9 @@ public class Main implements ContactListener, NewControllerListener, KeyListener
 		}
 	}
 
-	
+
 	public void playerWon(Player player) {
-		// todo
+		msg.setText("Player " + player.id_ZB + " has won!");
 	}
 }
 

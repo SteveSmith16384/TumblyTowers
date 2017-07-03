@@ -57,8 +57,8 @@ public class JBox2DFunctions {
 		FixtureDef fd = new FixtureDef();
 		fd.shape = ps;
 		fd.restitution = restitution;
-		fd.density = weight_kgm2;
 		fd.friction = friction;
+		fd.density = weight_kgm2;
 
 		BodyDef bd = new BodyDef();
 		bd.type = bodytype;
@@ -82,8 +82,8 @@ public class JBox2DFunctions {
 		FixtureDef fd = new FixtureDef();
 		fd.shape = ps;
 		fd.restitution = restitution;
-		fd.density = weight_kgm2;
 		fd.friction = friction;
+		fd.density = weight_kgm2;
 
 		BodyDef bd = new BodyDef();
 		bd.type = bodytype;

@@ -1,19 +1,15 @@
 TODO
-lShape not right
-make all shapes the same bounciness
-Use ints to check pos
-Set positioning for multiple players
-Stop players shapes moving over enemy shapes
-	spin l/r
-	Move and rotate directly, not through forces
-	Check if piece fallen through floor
+	Earthquake
+Sides widen over time
+	lShape not right
+	make all shapes the same bounciness
+	Set positioning for multiple players
+	Stop players shapes moving over enemy shapes
 	Check for winner
 
 
 LATER
-Make shapes diff colours
-Earthquake
+	Make shapes diff colours
 More types of shape
 Exploding bombs
-Sides widen over time
 Bouncy shapes
