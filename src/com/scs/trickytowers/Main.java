@@ -20,6 +20,7 @@ import org.jbox2d.dynamics.World;
 import org.jbox2d.dynamics.contacts.Contact;
 
 import ssmith.awt.ImageCache;
+import ssmith.lang.Functions;
 import ssmith.util.TSArrayList;
 import ssmith.util.TimedString;
 
@@ -126,8 +127,9 @@ public class Main implements ContactListener, NewControllerListener, KeyListener
 				Controllers.checkControllers();
 			}
 
-			for (Player id : this.players) {
-				this.playerInputSystem.process(id);
+			for (Player player : this.players) {
+				//this.playerInputSystem.process(player);
+				player.process();
 			}
 
 			collisions.clear();
@@ -227,6 +229,10 @@ public class Main implements ContactListener, NewControllerListener, KeyListener
 		return (leftPos[playernum] + rightPos[playernum])/2;
 	}
 
+
+	public float getShapeStartPosX(int playernum) {
+		return Functions.rndFloat(leftPos[playernum], rightPos[playernum]);
+	}
 
 
 	private void processCollision(Contact contact) {

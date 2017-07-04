@@ -46,13 +46,13 @@ public class KeyboardInput implements IInputDevice, KeyListener {
 
 
 	@Override
-	public boolean isUpPressed() {
+	public boolean isSpinLeftPressed() {
 		return up;
 	}
 
 
 	@Override
-	public boolean isDownPressed() {
+	public boolean isSpinRightPressed() {
 		return down;
 	}
 

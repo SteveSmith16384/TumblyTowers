@@ -1,12 +1,11 @@
 TODO
-Shapes disappearing immed
-Randomly adjust block start x
-Make blocks thinner
-Check for winner
+	Shapes disappearing immed
+	Check for winner
+	Rotate in jumps
+	Randomly adjust block start x
+	Make blocks thinner
 
 
 LATER
-	Make shapes diff colours
-More types of shape
 Exploding bombs
 Bouncy shapes
