@@ -20,7 +20,7 @@ public class VibratingPlatform extends PhysicalEntity implements IProcessable {
 		super(main, "VibratingPlatform");
 		
 		BodyUserData bud = new BodyUserData("Rectangle", Color.red, this);
-		this.body = JBox2DFunctions.AddRectangle(bud, main.world, x, y, width, 5f, BodyType.STATIC, 0.1f, 0.5f, 2f);
+		this.body = JBox2DFunctions.AddRectangle(bud, main.world, x, y, width, 5f, BodyType.STATIC, 0.0f, 0.5f, 2f);
 	}
 
 	

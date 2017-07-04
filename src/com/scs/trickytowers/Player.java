@@ -34,7 +34,7 @@ public class Player {
 			//if (currentShape.body.getWorldCenter().y < Statics.WIN_HEIGHT || Math.abs(currentShape.body.getWorldCenter().y - prevShapeY) > 0.1f) { // Still moving
 			float diff = Math.abs(currentShape.body.getWorldCenter().y - prevShapeY);
 			Statics.p("Diff=" + diff);
-			if (currentShape.body.getWorldCenter().y < 1 || diff > 0.1f) { // Still moving
+			if (currentShape.body.getWorldCenter().y < 1 || diff > 0.01f) { // Still moving
 				prevShapeY = currentShape.body.getWorldCenter().y;
 				if (currentShape.collided == false) {
 					Vec2 newPos = new Vec2(currentShape.body.getWorldCenter());
@@ -48,9 +48,9 @@ public class Player {
 							newPos.x++;
 						}
 					} else if (input.isSpinLeftPressed()) {
-						newAngle -= Math.PI/4;// 0.1f;
+						newAngle -= Math.PI/12;// 0.1f;
 					} else if (input.isSpinRightPressed()) {
-						newAngle += Math.PI/4;// 0.1f;
+						newAngle += Math.PI/12;// 0.1f;
 					}
 					currentShape.body.setTransform(newPos, newAngle);
 				}

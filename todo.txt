@@ -1,9 +1,6 @@
 TODO
-	Shapes disappearing immed
-	Check for winner
-	Rotate in jumps
-	Randomly adjust block start x
-	Make blocks thinner
+Rename Main
+	Blocks too bouncy
 
 
 LATER

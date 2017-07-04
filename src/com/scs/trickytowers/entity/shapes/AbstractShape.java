@@ -15,7 +15,7 @@ public abstract class AbstractShape extends PhysicalEntity implements ICollideab
 
 	protected static final float RESTITUTION = .0f;
 	protected static final float FRICTION = 1f;
-	protected static final float WEIGHT = 0.5f;
+	protected static final float WEIGHT = 0.1f;
 	
 	public boolean collided = false; // Can't move once collided
 	
