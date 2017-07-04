@@ -181,8 +181,8 @@ public class Main implements ContactListener, NewControllerListener, KeyListener
 		world = new World(gravity);
 		world.setContactListener(this);
 
-		Edge bottom = new Edge(this, 0, (float)(Statics.WORLD_HEIGHT_LOGICAL-10), Statics.WORLD_WIDTH_LOGICAL, (float)(Statics.WORLD_HEIGHT_LOGICAL-10));
-		this.addEntity(bottom);
+		//Edge bottom = new Edge(this, 0, (float)(Statics.WORLD_HEIGHT_LOGICAL-10), Statics.WORLD_WIDTH_LOGICAL, (float)(Statics.WORLD_HEIGHT_LOGICAL-10));
+		//this.addEntity(bottom);
 
 		// Create avatars
 		leftPos = new int[this.players.size()];
@@ -197,11 +197,11 @@ public class Main implements ContactListener, NewControllerListener, KeyListener
 			rightPos[i-1] = (int)((secWidth*i)+(bucketWidth/2));
 
 			// Create edges
-			Edge leftEdge = new Edge(this, this.getLeftBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL/2), this.getLeftBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL-10));
+			/*Edge leftEdge = new Edge(this, this.getLeftBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL/2), this.getLeftBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL-10));
 			this.addEntity(leftEdge);
 			
 			Edge rightEdge = new Edge(this, this.getRightBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL-10), this.getRightBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL/2));
-			this.addEntity(rightEdge);
+			this.addEntity(rightEdge);*/
 			
 			VibratingPlatform v = new VibratingPlatform(this, this.getCentreBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL-20), bucketWidth*0.9f);
 			this.addEntity(v);
@@ -359,6 +359,7 @@ public class Main implements ContactListener, NewControllerListener, KeyListener
 
 	public void playerWon(Player player) {
 		msg.setText("Player " + player.id_ZB + " has won!");
+		this.restartLevel = true;
 	}
 }
 

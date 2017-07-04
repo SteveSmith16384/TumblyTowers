@@ -20,14 +20,14 @@ public class VibratingPlatform extends PhysicalEntity implements IProcessable {
 		super(main, "VibratingPlatform");
 		
 		BodyUserData bud = new BodyUserData("Rectangle", Color.red, this);
-		this.body = JBox2DFunctions.AddRectangle(bud, main.world, x, y, width, 5f, BodyType.DYNAMIC, 0.1f, 1f, 2f);
+		this.body = JBox2DFunctions.AddRectangle(bud, main.world, x, y, width, 5f, BodyType.STATIC, 0.1f, 0f, 2f);
 	}
 
 	
 	@Override
 	public void preprocess(long interpol) {
 		if (timer.hasHit(interpol)) {
-			this.body.applyForceToCenter(new Vec2(0, -1000));
+			//todo - re-add this.body.applyForceToCenter(new Vec2(-100000, 0));
 		}
 		
 	}

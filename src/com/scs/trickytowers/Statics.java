@@ -13,7 +13,7 @@ public class Statics {
 	public static final int FPS = 30;
 	public static final float LOGICAL_TO_PIXELS = 3f;
 	public static final Vec2 VEC_CENTRE = new Vec2(0, 0);
-	public static final float STD_CELL_SIZE = 10f;
+	public static final float STD_CELL_SIZE = 5f;
 	
 
 	public static final int WINDOW_WIDTH = 800;

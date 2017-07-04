@@ -13,7 +13,7 @@ public abstract class Entity {
 	public int id;
 	public Point tmpPoint = new Point();
 	protected Main main;
-	public String name;
+	public String name; // todo - remove
 	
 	public Entity(Main _main, String _name) {
 		super();
@@ -26,14 +26,10 @@ public abstract class Entity {
 
 	public abstract void cleanup(World world);
 	
-	/*@Override
-	public String toString() {
-		return name;
-	}*/
 	
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName();
+		return this.getClass().getSimpleName() + super.toString();
 	}
 
 
