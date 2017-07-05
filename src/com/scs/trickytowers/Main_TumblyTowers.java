@@ -24,19 +24,17 @@ import ssmith.lang.Functions;
 import ssmith.util.TSArrayList;
 import ssmith.util.TimedString;
 
-import com.scs.trickytowers.entity.Edge;
 import com.scs.trickytowers.entity.Entity;
 import com.scs.trickytowers.entity.VibratingPlatform;
 import com.scs.trickytowers.entity.components.ICollideable;
 import com.scs.trickytowers.entity.components.IDrawable;
 import com.scs.trickytowers.entity.components.IProcessable;
 import com.scs.trickytowers.entity.systems.DrawingSystem;
-import com.scs.trickytowers.entity.systems.PlayerInputSystem;
 import com.scs.trickytowers.input.DeviceThread;
 import com.scs.trickytowers.input.IInputDevice;
 import com.scs.trickytowers.input.NewControllerListener;
 
-public class Main implements ContactListener, NewControllerListener, KeyListener {
+public class Main_TumblyTowers implements ContactListener, NewControllerListener, KeyListener {
 
 	public World world;
 	public MainWindow window;
@@ -46,7 +44,6 @@ public class Main implements ContactListener, NewControllerListener, KeyListener
 	private List<Player> players = new ArrayList<>();
 
 	private DrawingSystem drawingSystem;
-	private PlayerInputSystem playerInputSystem;
 	private List<Contact> collisions = new LinkedList<>();
 	private boolean restartLevel = false;
 	private int[] leftPos;
@@ -55,11 +52,11 @@ public class Main implements ContactListener, NewControllerListener, KeyListener
 
 
 	public static void main(String[] args) {
-		new Main();
+		new Main_TumblyTowers();
 	}
 
 
-	public Main() {
+	public Main_TumblyTowers() {
 		super();
 
 		window = new MainWindow(this);
@@ -73,7 +70,6 @@ public class Main implements ContactListener, NewControllerListener, KeyListener
 			Statics.img_cache.c = window;
 
 			drawingSystem = new DrawingSystem();
-			playerInputSystem = new PlayerInputSystem(this);
 
 			startLevel();
 			this.gameLoop();
@@ -109,7 +105,7 @@ public class Main implements ContactListener, NewControllerListener, KeyListener
 				restartLevel = false;
 				this.startLevel();
 			}
-			
+
 			msg.process(interpol);
 
 			this.entities.refresh();
@@ -187,30 +183,46 @@ public class Main implements ContactListener, NewControllerListener, KeyListener
 		//this.addEntity(bottom);
 
 		// Create avatars
-		leftPos = new int[this.players.size()];
-		rightPos = new int[this.players.size()];
-		float secWidth = Statics.WORLD_WIDTH_LOGICAL/(this.players.size()+1);
-		float bucketWidth = Statics.WORLD_WIDTH_LOGICAL/4;
-
+		float bucketWidth = Statics.WORLD_WIDTH_LOGICAL/5;
 		int i=1;
 		for (Player player : this.players) {
 			player.currentShape = null;
-			leftPos[i-1] = (int)((secWidth*i)-(bucketWidth/2));
-			rightPos[i-1] = (int)((secWidth*i)+(bucketWidth/2));
+			//leftPos[i-1] = (int)((secWidth*i)-(bucketWidth/2));
+			//rightPos[i-1] = (int)((secWidth*i)+(bucketWidth/2));
 
 			// Create edges
 			/*Edge leftEdge = new Edge(this, this.getLeftBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL/2), this.getLeftBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL-10));
 			this.addEntity(leftEdge);
-			
+
 			Edge rightEdge = new Edge(this, this.getRightBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL-10), this.getRightBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL/2));
 			this.addEntity(rightEdge);*/
-			
+
 			VibratingPlatform v = new VibratingPlatform(this, this.getCentreBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL-20), bucketWidth*0.9f);
 			this.addEntity(v);
-			
+
 			i++;
 		}
 
+		leftPos = new int[this.players.size()];
+		rightPos = new int[this.players.size()];
+		float secWidth = Statics.WORLD_WIDTH_LOGICAL/(this.players.size()+1);
+
+		if (this.players.size() == 1) {
+			leftPos[0] = (int)(Statics.WORLD_WIDTH_LOGICAL-bucketWidth)/2;
+			rightPos[0] = (int)(Statics.WORLD_WIDTH_LOGICAL+bucketWidth)/2;
+		} else if (this.players.size() == 2) {
+			leftPos[0] = (int)(bucketWidth/2);
+			rightPos[0] = leftPos[0] + (int)bucketWidth;
+			leftPos[1] = (int)(Statics.WORLD_WIDTH_LOGICAL-bucketWidth-(bucketWidth/2));
+			rightPos[1] = leftPos[1] + (int)bucketWidth;
+		} else if (this.players.size() == 3) {
+			leftPos[0] = (int)(bucketWidth/2);
+			rightPos[0] = leftPos[0] + (int)bucketWidth;
+			leftPos[1] = (int)(Statics.WORLD_WIDTH_LOGICAL-bucketWidth)/2;
+			rightPos[1] = (int)(Statics.WORLD_WIDTH_LOGICAL+bucketWidth)/2;
+			leftPos[2] = (int)(Statics.WORLD_WIDTH_LOGICAL-bucketWidth-(bucketWidth/2));
+			rightPos[2] = leftPos[2] + (int)bucketWidth;
+		}
 
 	}
 

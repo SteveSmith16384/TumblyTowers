@@ -4,11 +4,11 @@ import org.jbox2d.dynamics.BodyType;
 
 import com.scs.trickytowers.BodyUserData;
 import com.scs.trickytowers.JBox2DFunctions;
-import com.scs.trickytowers.Main;
+import com.scs.trickytowers.Main_TumblyTowers;
 
 public class Rectangle extends AbstractShape {
 	
-	public Rectangle(Main _main, float width, float height, float sx) {
+	public Rectangle(Main_TumblyTowers _main, float width, float height, float sx) {
 		super(_main, "Rectangle");
 
 		BodyUserData bud = new BodyUserData("Rectangle", AbstractShape.getRandomColour(), this);

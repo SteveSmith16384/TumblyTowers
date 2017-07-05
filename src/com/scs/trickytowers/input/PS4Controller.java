@@ -1,7 +1,6 @@
 package com.scs.trickytowers.input;
 
 import org.gamepad4j.ButtonID;
-import org.gamepad4j.DpadDirection;
 import org.gamepad4j.IController;
 import org.gamepad4j.IStick;
 import org.gamepad4j.StickID;
@@ -84,6 +83,13 @@ public final class PS4Controller implements IInputDevice {
 	@Override
 	public String toString() {
 		return "PS4Controller:" + getID();
+	}
+
+
+	@Override
+	public void clearInputs() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

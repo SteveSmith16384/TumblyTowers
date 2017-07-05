@@ -1,8 +1,12 @@
 TODO
-Rename Main
+Add background
+PS4 - Move shapes l/r in jumps
+	In 2-player, move players further apart
+Adjust mass by size?
 	Blocks too bouncy
 
 
 LATER
+if num enetites > 35, remove some
 Exploding bombs
 Bouncy shapes

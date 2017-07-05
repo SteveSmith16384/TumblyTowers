@@ -19,5 +19,7 @@ public interface IInputDevice {
 	int getAngle();
 
 	String toString();
+	
+	void clearInputs();
 
 }

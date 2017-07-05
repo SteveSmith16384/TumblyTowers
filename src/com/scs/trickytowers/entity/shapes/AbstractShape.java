@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import ssmith.lang.Functions;
 
-import com.scs.trickytowers.Main;
+import com.scs.trickytowers.Main_TumblyTowers;
 import com.scs.trickytowers.Statics;
 import com.scs.trickytowers.entity.Entity;
 import com.scs.trickytowers.entity.PhysicalEntity;
@@ -13,13 +13,13 @@ import com.scs.trickytowers.entity.components.IProcessable;
 
 public abstract class AbstractShape extends PhysicalEntity implements ICollideable, IProcessable {
 
-	protected static final float RESTITUTION = .0f;
-	protected static final float FRICTION = 1f;
-	protected static final float WEIGHT = 0.1f;
+	protected static final float RESTITUTION = 0f;
+	protected static final float FRICTION = .9f;
+	protected static final float WEIGHT = 0.01f;
 	
 	public boolean collided = false; // Can't move once collided
 	
-	public AbstractShape(Main _main, String name) {
+	public AbstractShape(Main_TumblyTowers _main, String name) {
 		super(_main, name);
 		
 	}

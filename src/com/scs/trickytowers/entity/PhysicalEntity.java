@@ -7,7 +7,7 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.World;
 
-import com.scs.trickytowers.Main;
+import com.scs.trickytowers.Main_TumblyTowers;
 import com.scs.trickytowers.entity.components.IDrawable;
 import com.scs.trickytowers.entity.components.IGetPosition;
 import com.scs.trickytowers.entity.systems.DrawingSystem;
@@ -17,7 +17,7 @@ public abstract class PhysicalEntity extends Entity implements IDrawable, IGetPo
 	protected Point tmp = new Point();
 	public Body body;
 	
-	public PhysicalEntity(Main _main, String _name) {
+	public PhysicalEntity(Main_TumblyTowers _main, String _name) {
 		super(_main, _name);
 	}
 

@@ -5,11 +5,11 @@ import org.jbox2d.dynamics.BodyType;
 
 import com.scs.trickytowers.BodyUserData;
 import com.scs.trickytowers.JBox2DFunctions;
-import com.scs.trickytowers.Main;
+import com.scs.trickytowers.Main_TumblyTowers;
 
 public class LShape extends AbstractShape {
 	
-	public LShape(Main _main, float x, float unit_size) {
+	public LShape(Main_TumblyTowers _main, float x, float unit_size) {
 		super(_main, "LShape");
 
 		BodyUserData bud = new BodyUserData("LShape", AbstractShape.getRandomColour(), this);

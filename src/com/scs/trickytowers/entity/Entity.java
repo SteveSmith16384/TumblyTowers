@@ -4,7 +4,7 @@ import java.awt.Point;
 
 import org.jbox2d.dynamics.World;
 
-import com.scs.trickytowers.Main;
+import com.scs.trickytowers.Main_TumblyTowers;
 
 public abstract class Entity { 
 	
@@ -12,10 +12,10 @@ public abstract class Entity {
 
 	public int id;
 	public Point tmpPoint = new Point();
-	protected Main main;
+	protected Main_TumblyTowers main;
 	public String name; // todo - remove
 	
-	public Entity(Main _main, String _name) {
+	public Entity(Main_TumblyTowers _main, String _name) {
 		super();
 		
 		main = _main;

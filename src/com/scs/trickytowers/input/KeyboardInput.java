@@ -203,4 +203,14 @@ public class KeyboardInput implements IInputDevice, KeyListener {
 		return "KeyboardInput:" + id;
 	}
 
+
+	@Override
+	public void clearInputs() {
+		left = false;
+		right = false;
+		up = false;
+		down = false;
+		
+	}
+
 }

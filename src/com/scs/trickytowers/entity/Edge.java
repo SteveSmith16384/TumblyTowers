@@ -6,11 +6,11 @@ import org.jbox2d.dynamics.BodyType;
 
 import com.scs.trickytowers.BodyUserData;
 import com.scs.trickytowers.JBox2DFunctions;
-import com.scs.trickytowers.Main;
+import com.scs.trickytowers.Main_TumblyTowers;
 
 public class Edge extends PhysicalEntity {
 
-	public Edge(Main _main, float sx, float sy, float ex, float ey) {
+	public Edge(Main_TumblyTowers _main, float sx, float sy, float ex, float ey) {
 		super(_main, "Edge");
 		
 		BodyUserData bud = new BodyUserData("Edge", Color.black, this);
