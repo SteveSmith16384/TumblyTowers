@@ -182,8 +182,29 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 		//Edge bottom = new Edge(this, 0, (float)(Statics.WORLD_HEIGHT_LOGICAL-10), Statics.WORLD_WIDTH_LOGICAL, (float)(Statics.WORLD_HEIGHT_LOGICAL-10));
 		//this.addEntity(bottom);
 
-		// Create avatars
+		leftPos = new int[this.players.size()];
+		rightPos = new int[this.players.size()];
+		float secWidth = Statics.WORLD_WIDTH_LOGICAL/(this.players.size()+1);
 		float bucketWidth = Statics.WORLD_WIDTH_LOGICAL/5;
+
+		if (this.players.size() == 1) {
+			leftPos[0] = (int)(Statics.WORLD_WIDTH_LOGICAL-bucketWidth)/2;
+			rightPos[0] = (int)(Statics.WORLD_WIDTH_LOGICAL+bucketWidth)/2;
+		} else if (this.players.size() == 2) {
+			leftPos[0] = (int)(bucketWidth/2);
+			rightPos[0] = leftPos[0] + (int)bucketWidth;
+			leftPos[1] = (int)(Statics.WORLD_WIDTH_LOGICAL-bucketWidth-(bucketWidth/2));
+			rightPos[1] = leftPos[1] + (int)bucketWidth;
+		} else if (this.players.size() == 3) {
+			leftPos[0] = (int)(bucketWidth/2);
+			rightPos[0] = leftPos[0] + (int)bucketWidth;
+			leftPos[1] = (int)(Statics.WORLD_WIDTH_LOGICAL-bucketWidth)/2;
+			rightPos[1] = (int)(Statics.WORLD_WIDTH_LOGICAL+bucketWidth)/2;
+			leftPos[2] = (int)(Statics.WORLD_WIDTH_LOGICAL-bucketWidth-(bucketWidth/2));
+			rightPos[2] = leftPos[2] + (int)bucketWidth;
+		}
+
+		// Create avatars
 		int i=1;
 		for (Player player : this.players) {
 			player.currentShape = null;
@@ -201,27 +222,6 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 			this.addEntity(v);
 
 			i++;
-		}
-
-		leftPos = new int[this.players.size()];
-		rightPos = new int[this.players.size()];
-		float secWidth = Statics.WORLD_WIDTH_LOGICAL/(this.players.size()+1);
-
-		if (this.players.size() == 1) {
-			leftPos[0] = (int)(Statics.WORLD_WIDTH_LOGICAL-bucketWidth)/2;
-			rightPos[0] = (int)(Statics.WORLD_WIDTH_LOGICAL+bucketWidth)/2;
-		} else if (this.players.size() == 2) {
-			leftPos[0] = (int)(bucketWidth/2);
-			rightPos[0] = leftPos[0] + (int)bucketWidth;
-			leftPos[1] = (int)(Statics.WORLD_WIDTH_LOGICAL-bucketWidth-(bucketWidth/2));
-			rightPos[1] = leftPos[1] + (int)bucketWidth;
-		} else if (this.players.size() == 3) {
-			leftPos[0] = (int)(bucketWidth/2);
-			rightPos[0] = leftPos[0] + (int)bucketWidth;
-			leftPos[1] = (int)(Statics.WORLD_WIDTH_LOGICAL-bucketWidth)/2;
-			rightPos[1] = (int)(Statics.WORLD_WIDTH_LOGICAL+bucketWidth)/2;
-			leftPos[2] = (int)(Statics.WORLD_WIDTH_LOGICAL-bucketWidth-(bucketWidth/2));
-			rightPos[2] = leftPos[2] + (int)bucketWidth;
 		}
 
 	}
