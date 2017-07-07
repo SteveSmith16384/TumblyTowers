@@ -6,9 +6,13 @@ import org.gamepad4j.IStick;
 import org.gamepad4j.StickID;
 import org.gamepad4j.StickPosition;
 
+import ssmith.util.RealtimeInterval;
+
 public final class PS4Controller implements IInputDevice {
 
 	private IController gamepad;
+	private RealtimeInterval lrTimer = new RealtimeInterval(200, true);
+	private RealtimeInterval spinTimer = new RealtimeInterval(200, true);
 
 	public PS4Controller(IController _gamepad) {
 		gamepad = _gamepad;
@@ -17,19 +21,27 @@ public final class PS4Controller implements IInputDevice {
 
 	@Override
 	public boolean isLeftPressed() {
-		StickPosition pos = gamepad.getStick(StickID.LEFT).getPosition();
-		//return pos.getDirection() == DpadDirection.LEFT;
-		//Statics.p("Left=" + pos.getDegree());
-		return pos.getDegree() > 252 && pos.getDegree() < 360; // 90=right, 270=left
+		if (lrTimer.hitInterval()) {
+			StickPosition pos = gamepad.getStick(StickID.LEFT).getPosition();
+			//return pos.getDirection() == DpadDirection.LEFT;
+			//Statics.p("Left=" + pos.getDegree());
+			return pos.getDegree() > 252 && pos.getDegree() < 360; // 90=right, 270=left
+		} else {
+			return false;
+		}
 
 	}
 
 
 	@Override
 	public boolean isRightPressed() {
-		StickPosition pos = gamepad.getStick(StickID.LEFT).getPosition();
-		//return pos.getDirection() == DpadDirection.RIGHT;
-		return pos.getDegree() > 17 && pos.getDegree() < 152; // 90=right, 270=left
+		if (lrTimer.hitInterval()) {
+			StickPosition pos = gamepad.getStick(StickID.LEFT).getPosition();
+			//return pos.getDirection() == DpadDirection.RIGHT;
+			return pos.getDegree() > 17 && pos.getDegree() < 152; // 90=right, 270=left
+		} else {
+			return false;
+		}
 	}
 
 
@@ -41,18 +53,26 @@ public final class PS4Controller implements IInputDevice {
 
 	@Override
 	public boolean isSpinLeftPressed() {
-		//StickPosition pos = gamepad.getStick(StickID.RIGHT).getPosition();
-		//return pos.getDirection() == DpadDirection.LEFT;
-		return gamepad.isButtonPressed(ButtonID.FACE_LEFT);
+		if (spinTimer.hitInterval()) {
+			//StickPosition pos = gamepad.getStick(StickID.RIGHT).getPosition();
+			//return pos.getDirection() == DpadDirection.LEFT;
+			return gamepad.isButtonPressed(ButtonID.FACE_LEFT);
+		} else {
+			return false;
+		}
 	}
 
 
 	@Override
 	public boolean isSpinRightPressed() {
-		//StickPosition pos = gamepad.getStick(StickID.RIGHT).getPosition();
-		//return pos.getDirection() == DpadDirection.RIGHT;
-		//return pos.getDegree() > 107 && pos.getDegree() < 252;
-		return gamepad.isButtonPressed(ButtonID.FACE_RIGHT);
+		if (spinTimer.hitInterval()) {
+			//StickPosition pos = gamepad.getStick(StickID.RIGHT).getPosition();
+			//return pos.getDirection() == DpadDirection.RIGHT;
+			//return pos.getDegree() > 107 && pos.getDegree() < 252;
+			return gamepad.isButtonPressed(ButtonID.FACE_RIGHT);
+		} else {
+			return false;
+		}
 	}
 
 
@@ -65,7 +85,7 @@ public final class PS4Controller implements IInputDevice {
 		return pos.getDistanceToCenter();
 	}
 
-	
+
 	@Override
 	public int getAngle() {
 		IStick leftStick = gamepad.getStick(StickID.LEFT);
@@ -89,7 +109,7 @@ public final class PS4Controller implements IInputDevice {
 	@Override
 	public void clearInputs() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

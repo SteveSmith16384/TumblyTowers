@@ -1,9 +1,10 @@
 TODO
-Add pics to readme
-Show who won with big rectangle
-PS4 controller too resposnive
-Add background
-PS4 - Move shapes l/r in jumps
-
+	Remove platform of losing players
+	PS4 controller too resposnive - only update every so often
+Add background - ask kids
+	PS4 - Move shapes l/r in jumps
 
 LATER
+Show score at top?
+
+

@@ -4,8 +4,8 @@ import org.jbox2d.common.Vec2;
 
 import ssmith.lang.Functions;
 
+import com.scs.trickytowers.entity.VibratingPlatform;
 import com.scs.trickytowers.entity.shapes.AbstractShape;
-import com.scs.trickytowers.entity.shapes.LShape;
 import com.scs.trickytowers.entity.shapes.Rectangle;
 import com.scs.trickytowers.input.IInputDevice;
 
@@ -16,7 +16,8 @@ public class Player {
 	public AbstractShape currentShape;
 	public float prevShapeY;
 	private Main_TumblyTowers main;
-
+	public VibratingPlatform vib;
+	
 	private static int nextId = 0;
 
 	public Player(Main_TumblyTowers _main, IInputDevice _input) {

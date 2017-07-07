@@ -45,11 +45,12 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 
 	private DrawingSystem drawingSystem;
 	private List<Contact> collisions = new LinkedList<>();
-	private boolean restartLevel = false;
 	private int[] leftPos;
 	private int[] rightPos;
 	private TimedString msg = new TimedString(2000);
 
+	private boolean restartLevel = false;
+	private long restartOn;
 
 	public static void main(String[] args) {
 		new Main_TumblyTowers();
@@ -101,7 +102,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 				}
 			}
 
-			if (restartLevel) {
+			if (restartLevel && this.restartOn < System.currentTimeMillis()) {
 				restartLevel = false;
 				this.startLevel();
 			}
@@ -221,6 +222,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 			VibratingPlatform v = new VibratingPlatform(this, this.getCentreBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL-20), bucketWidth*0.9f);
 			this.addEntity(v);
 
+			player.vib = v;
 			i++;
 		}
 
@@ -327,6 +329,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 			this.players.add(player);
 		}
 		this.restartLevel = true;
+		this.restartOn = 0;
 
 	}
 
@@ -366,10 +369,12 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 
 	@Override
 	public void controllerRemoved(IInputDevice input) {
-		for (Player player : this.players) {
-			if (player.input == input) {
-				this.players.remove(player);
-				break;
+		synchronized (players) {
+			for (Player player : this.players) {
+				if (player.input == input) {
+					this.players.remove(player);
+					break;
+				}
 			}
 		}
 	}
@@ -378,6 +383,17 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 	public void playerWon(Player player) {
 		msg.setText("Player " + player.id_ZB + " has won!");
 		this.restartLevel = true;
+		this.restartOn = System.currentTimeMillis() + 4000;
+
+		// Remove other player's vibrating platforms
+		synchronized (players) {
+			for (Player p : this.players) {
+				if (player != p) {
+					this.removeEntity(p.vib);
+				}
+			}
+		}
+
 	}
 }
 
