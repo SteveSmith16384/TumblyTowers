@@ -75,7 +75,7 @@ public class Player {
 
 
 	private AbstractShape getRandomShape(float x) {
-		int i = Functions.rnd(0, 3);
+		/*int i = Functions.rnd(0, 3);
 		switch (i) {
 		case 0: // Square
 			int z = Functions.rnd(1,  3);
@@ -87,14 +87,14 @@ public class Player {
 		case 2: // Long and thin
 			return new Rectangle(main, Statics.STD_CELL_SIZE*Functions.rnd(2, 6), Statics.STD_CELL_SIZE, x);
 
-		case 3: // Rectangle
-			int w = Functions.rnd(2,  5);
-			int h = Functions.rnd(2,  5);
+		case 3: // Rectangle*/
+			int w = Functions.rnd(1, 3);
+			int h = Functions.rnd(1, 3);
 			return new Rectangle(main, Statics.STD_CELL_SIZE*w, Statics.STD_CELL_SIZE*h, x);
 
-		default:
+		/*default:
 			throw new RuntimeException("Unknown shape: " + i);
-		}
+		}*/
 	}
 
 

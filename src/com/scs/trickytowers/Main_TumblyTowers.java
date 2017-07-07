@@ -184,8 +184,8 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 
 		leftPos = new int[this.players.size()];
 		rightPos = new int[this.players.size()];
-		float secWidth = Statics.WORLD_WIDTH_LOGICAL/(this.players.size()+1);
-		float bucketWidth = Statics.WORLD_WIDTH_LOGICAL/5;
+		//float secWidth = Statics.WORLD_WIDTH_LOGICAL/(this.players.size()+1);
+		float bucketWidth = Statics.WORLD_WIDTH_LOGICAL/7;
 
 		if (this.players.size() == 1) {
 			leftPos[0] = (int)(Statics.WORLD_WIDTH_LOGICAL-bucketWidth)/2;
