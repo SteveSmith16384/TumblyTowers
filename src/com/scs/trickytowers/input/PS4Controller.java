@@ -13,10 +13,10 @@ import ssmith.util.RealtimeInterval;
 public final class PS4Controller implements IInputDevice {
 
 	private IController gamepad;
-	private RealtimeInterval leftTimer = new RealtimeInterval(200, true);
-	private RealtimeInterval rightTimer = new RealtimeInterval(200, true);
-	private RealtimeInterval spinLeftTimer = new RealtimeInterval(200, true);
-	private RealtimeInterval spinRightTimer = new RealtimeInterval(200, true);
+	private RealtimeInterval leftTimer = new RealtimeInterval(150, true); // todo - make const
+	private RealtimeInterval rightTimer = new RealtimeInterval(150, true);
+	private RealtimeInterval spinLeftTimer = new RealtimeInterval(150, true);
+	private RealtimeInterval spinRightTimer = new RealtimeInterval(150, true);
 
 	public PS4Controller(IController _gamepad) {
 		gamepad = _gamepad;

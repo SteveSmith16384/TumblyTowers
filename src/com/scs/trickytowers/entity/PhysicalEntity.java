@@ -16,7 +16,7 @@ public abstract class PhysicalEntity extends Entity implements IDrawable, IGetPo
 
 	protected Point tmp = new Point();
 	public Body body;
-	
+
 	public PhysicalEntity(Main_TumblyTowers _main, String _name) {
 		super(_main, _name);
 	}
@@ -25,7 +25,7 @@ public abstract class PhysicalEntity extends Entity implements IDrawable, IGetPo
 	@Override
 	public void draw(Graphics g, DrawingSystem system) {
 		system.drawShape(tmp, g, body);
-		
+
 	}
 
 
@@ -37,19 +37,23 @@ public abstract class PhysicalEntity extends Entity implements IDrawable, IGetPo
 
 	/*public void applyForceToCenter(Vec2 vec) {
 		body.applyForceToCenter(vec);
-		
+
 	}*/
 
 
 	/*public void applyLinearImpulse(Vec2 vec) {
 		body.applyLinearImpulse(vec, Statics.VEC_CENTRE, true);
-		
+
 	}*/
 
-	
+
 	@Override
 	public void cleanup(World world) {
-		world.destroyBody(body);
+		try {
+			world.destroyBody(body);
+		} catch (NullPointerException ex) {
+			ex.printStackTrace();
+		}
 		body = null;
 	}
 
