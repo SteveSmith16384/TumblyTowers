@@ -1,7 +1,8 @@
 TODO
+Add background - https://opengameart.org/content/nine-cartoon-backdrops
 	Remove platform of losing players
 	PS4 controller too resposnive - only update every so often
-Add background - ask kids
+ - ask kids
 	PS4 - Move shapes l/r in jumps
 
 LATER
