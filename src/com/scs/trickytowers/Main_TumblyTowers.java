@@ -2,6 +2,7 @@ package com.scs.trickytowers;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 
 	private boolean restartLevel = false;
 	private long restartOn;
+	private Image background;
 
 	public static void main(String[] args) {
 		new Main_TumblyTowers();
@@ -137,8 +139,9 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 
 			// Draw screen
 			Graphics g = window.BS.getDrawGraphics();
-			g.setColor(Color.white);
-			g.fillRect(0, 0, Statics.WINDOW_WIDTH, Statics.WINDOW_HEIGHT);
+			//g.setColor(Color.white);
+			//g.fillRect(0, 0, Statics.WINDOW_WIDTH, Statics.WINDOW_HEIGHT);
+			g.drawImage(this.background, 0, 0, this.window);
 
 			g.setColor(Color.black);
 			g.drawString(msg.getString(), 20, 50);
@@ -226,6 +229,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 			i++;
 		}
 
+		background = Statics.img_cache.getImage("Castle Sunset.jpg", Statics.WINDOW_WIDTH, Statics.WINDOW_HEIGHT);
 	}
 
 
