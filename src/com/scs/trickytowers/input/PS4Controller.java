@@ -6,13 +6,17 @@ import org.gamepad4j.IStick;
 import org.gamepad4j.StickID;
 import org.gamepad4j.StickPosition;
 
+import com.scs.trickytowers.Statics;
+
 import ssmith.util.RealtimeInterval;
 
 public final class PS4Controller implements IInputDevice {
 
 	private IController gamepad;
-	private RealtimeInterval lrTimer = new RealtimeInterval(200, true);
-	private RealtimeInterval spinTimer = new RealtimeInterval(200, true);
+	private RealtimeInterval leftTimer = new RealtimeInterval(150, true); // todo - make const
+	private RealtimeInterval rightTimer = new RealtimeInterval(150, true);
+	private RealtimeInterval spinLeftTimer = new RealtimeInterval(150, true);
+	private RealtimeInterval spinRightTimer = new RealtimeInterval(150, true);
 
 	public PS4Controller(IController _gamepad) {
 		gamepad = _gamepad;
@@ -21,7 +25,7 @@ public final class PS4Controller implements IInputDevice {
 
 	@Override
 	public boolean isLeftPressed() {
-		if (lrTimer.hitInterval()) {
+		if (leftTimer.hitInterval()) {
 			StickPosition pos = gamepad.getStick(StickID.LEFT).getPosition();
 			//return pos.getDirection() == DpadDirection.LEFT;
 			//Statics.p("Left=" + pos.getDegree());
@@ -35,9 +39,10 @@ public final class PS4Controller implements IInputDevice {
 
 	@Override
 	public boolean isRightPressed() {
-		if (lrTimer.hitInterval()) {
+		if (rightTimer.hitInterval()) {
 			StickPosition pos = gamepad.getStick(StickID.LEFT).getPosition();
 			//return pos.getDirection() == DpadDirection.RIGHT;
+			//Statics.p("Left=" + pos.getDegree());
 			return pos.getDegree() > 17 && pos.getDegree() < 152; // 90=right, 270=left
 		} else {
 			return false;
@@ -53,7 +58,7 @@ public final class PS4Controller implements IInputDevice {
 
 	@Override
 	public boolean isSpinLeftPressed() {
-		if (spinTimer.hitInterval()) {
+		if (spinLeftTimer.hitInterval()) {
 			//StickPosition pos = gamepad.getStick(StickID.RIGHT).getPosition();
 			//return pos.getDirection() == DpadDirection.LEFT;
 			return gamepad.isButtonPressed(ButtonID.FACE_LEFT);
@@ -65,7 +70,7 @@ public final class PS4Controller implements IInputDevice {
 
 	@Override
 	public boolean isSpinRightPressed() {
-		if (spinTimer.hitInterval()) {
+		if (spinRightTimer.hitInterval()) {
 			//StickPosition pos = gamepad.getStick(StickID.RIGHT).getPosition();
 			//return pos.getDirection() == DpadDirection.RIGHT;
 			//return pos.getDegree() > 107 && pos.getDegree() < 252;
