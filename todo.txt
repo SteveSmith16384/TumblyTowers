@@ -1,4 +1,5 @@
 TODO
+Esc to restart
 Random backgrounds 
 Full screen
 
