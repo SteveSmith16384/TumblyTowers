@@ -72,7 +72,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 			Statics.img_cache = ImageCache.GetInstance(null);
 			Statics.img_cache.c = window;
 
-			drawingSystem = new DrawingSystem();
+			drawingSystem = new DrawingSystem(this);
 
 			startLevel();
 			this.gameLoop();
@@ -145,10 +145,13 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 
 			g.setColor(Color.black);
 			g.drawString(msg.getString(), 20, 50);
+			if (Statics.DEBUG) {
 			g.drawString("Num Entities: " + this.entities.size(), 20, 70);
-
+			} else {
+				g.drawString("PRESS FIRE TO JOIN!", 20, 70);
+			}
 			g.setColor(Color.gray);
-			g.drawLine(0, (int)(Statics.WIN_HEIGHT * Statics.LOGICAL_TO_PIXELS), Statics.WINDOW_WIDTH, (int)(Statics.WIN_HEIGHT * Statics.LOGICAL_TO_PIXELS));
+			g.drawLine(0, (int)(Statics.WIN_HEIGHT * Statics.LOGICAL_TO_PIXELS), window.getWidth(), (int)(Statics.WIN_HEIGHT * Statics.LOGICAL_TO_PIXELS));
 
 			drawingSystem.startOfDrawing(g);
 			for (Entity e : this.entities) {
@@ -209,7 +212,6 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 		}
 
 		// Create avatars
-		int i=1;
 		for (Player player : this.players) {
 			player.currentShape = null;
 			//leftPos[i-1] = (int)((secWidth*i)-(bucketWidth/2));
@@ -226,10 +228,9 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 			this.addEntity(v);
 
 			player.vib = v;
-			i++;
 		}
 
-		background = Statics.img_cache.getImage("Castle Sunset.jpg", Statics.WINDOW_WIDTH, Statics.WINDOW_HEIGHT);
+		background = Statics.img_cache.getImage("Castle Sunset.jpg", window.getWidth(), window.getHeight());
 	}
 
 
@@ -359,7 +360,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 	@Override
 	public void keyReleased(KeyEvent ke) {
 		if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			//restartLevel = true;
+			System.exit(0);
 		} else if (ke.getKeyCode() == KeyEvent.VK_1) {
 		}
 

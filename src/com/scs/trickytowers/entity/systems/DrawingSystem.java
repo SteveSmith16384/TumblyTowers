@@ -17,16 +17,17 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
 
 import com.scs.trickytowers.BodyUserData;
+import com.scs.trickytowers.Main_TumblyTowers;
 import com.scs.trickytowers.Statics;
 
 public class DrawingSystem {
 	
-	//private static final float currZoom = Statics.WINDOW_HEIGHT
-
+	private Main_TumblyTowers game;
 	public Vec2 cam_centre_logical = new Vec2();
 	private Stroke stroke;
 
-	public DrawingSystem() {
+	public DrawingSystem(Main_TumblyTowers _game) {
+		game = _game;
 		stroke = new BasicStroke(4);
 	}
 
@@ -44,8 +45,8 @@ public class DrawingSystem {
 
 
 	public void getPixelPos(Point ret, Vec2 worldpos) {
-		int x1 = (int)((worldpos.x-cam_centre_logical.x) * Statics.LOGICAL_TO_PIXELS + (Statics.WINDOW_WIDTH/2));
-		int y1 = (int)((worldpos.y-cam_centre_logical.y) * Statics.LOGICAL_TO_PIXELS + (Statics.WINDOW_HEIGHT/2));
+		int x1 = (int)((worldpos.x-cam_centre_logical.x) * Statics.LOGICAL_TO_PIXELS + (game.window.getWidth()/2));
+		int y1 = (int)((worldpos.y-cam_centre_logical.y) * Statics.LOGICAL_TO_PIXELS + (game.window.getHeight()/2));
 		ret.x = x1;
 		ret.y = y1;
 	}
