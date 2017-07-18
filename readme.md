@@ -1,6 +1,6 @@
 # TUMBLY TOWERS
 
-![ss1.png](http://i.imgur.com/EynwcXt.png)
+![ss1.png](http://i.imgur.com/CuponTl.png)
 
 by Stephen Carlyle-Smith (https://twitter.com/stephencsmith)
 
@@ -38,4 +38,3 @@ Thanks for playing!
 
 Stephen
 https://twitter.com/stephencsmith
-
