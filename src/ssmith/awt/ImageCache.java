@@ -52,7 +52,7 @@ public class ImageCache implements Runnable {
 		super();
 
 		cacheDir = _CACHE_DIR;
-		
+
 		if (cacheDir != null) {
 			new File(cacheDir).mkdirs();
 		}
@@ -121,10 +121,10 @@ public class ImageCache implements Runnable {
 
 					// Save it
 					if (cacheDir != null) {
-					File saveAs = new File(cacheDir + key);
-					if (saveAs.exists() == false) {
-						ImageIO.write(img, "png", saveAs);
-					}
+						File saveAs = new File(cacheDir + key);
+						if (saveAs.exists() == false) {
+							ImageIO.write(img, "png", saveAs);
+						}
 					}
 					return img;
 				} else {
@@ -139,24 +139,24 @@ public class ImageCache implements Runnable {
 
 	}
 
-	
+
 	@Override
 	public void run() {
 		if (cacheDir != null) {
-		Statics.p("Loading image cache...");
-		File files[] = new File(cacheDir).listFiles();
-		for(File file : files) {
-			try {
-				BufferedImage img = ImageIO.read(file);
-				synchronized (cache) {
-					cache.put(file.getName(), img);
-					Statics.p("Loaded " + file.getName());
+			Statics.p("Loading image cache...");
+			File files[] = new File(cacheDir).listFiles();
+			for(File file : files) {
+				try {
+					BufferedImage img = ImageIO.read(file);
+					synchronized (cache) {
+						cache.put(file.getName(), img);
+						Statics.p("Loaded " + file.getName());
+					}
+				} catch (IOException ex) {
+					ex.printStackTrace();
 				}
-			} catch (IOException ex) {
-				ex.printStackTrace();
 			}
-		}
-		Statics.p("Finished loading image cache");
+			Statics.p("Finished loading image cache");
 		}
 	}
 

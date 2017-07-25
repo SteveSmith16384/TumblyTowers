@@ -24,8 +24,11 @@ public abstract class PhysicalEntity extends Entity implements IDrawable, IGetPo
 
 	@Override
 	public void draw(Graphics g, DrawingSystem system) {
+		try {
 		system.drawShape(tmp, g, body);
-
+		} catch (NullPointerException ex) {
+			ex.printStackTrace();
+		}
 	}
 
 
