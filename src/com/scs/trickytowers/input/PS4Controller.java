@@ -6,8 +6,6 @@ import org.gamepad4j.IStick;
 import org.gamepad4j.StickID;
 import org.gamepad4j.StickPosition;
 
-import com.scs.trickytowers.Statics;
-
 import ssmith.util.RealtimeInterval;
 
 public final class PS4Controller implements IInputDevice {

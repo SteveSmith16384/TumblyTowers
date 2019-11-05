@@ -96,7 +96,7 @@ public class DesktopControllerProvider implements IControllerProvider {
 	@Override
 	public synchronized void checkControllers() {
 		jniWrapper.natDetectPads();
-		for(DesktopController controller : this.connected.values()) {
+		for(DesktopController controller : connected.values()) {
 			controller.setChecked(false);
 		}
 		
@@ -108,17 +108,17 @@ public class DesktopControllerProvider implements IControllerProvider {
 		
 		// 1st check which controllers are (still) connected
 		int newNumberOfControllers = jniWrapper.natGetNumberOfPads();
-		if(newNumberOfControllers != this.numberOfControllers) {
-			this.numberOfControllers = newNumberOfControllers;
+		if(newNumberOfControllers != numberOfControllers) {
+			numberOfControllers = newNumberOfControllers;
 			if(Log.debugEnabled) {
-				Log.logger.debug("Number of controllers: " + this.numberOfControllers);
+				Log.logger.debug("Number of controllers: " + numberOfControllers);
 			}
 		}
 //		Log.log("Check for newly connected controllers...");
-		for(int ct = 0; ct < this.numberOfControllers; ct++) {
+		for(int ct = 0; ct < numberOfControllers; ct++) {
 			int connectedId = jniWrapper.natGetDeviceID(ct);
 			if(connectedId != -1) {
-				DesktopController controller = this.connected.get(connectedId);
+				DesktopController controller = connected.get(connectedId);
 				if(controller != null) {
 					controller.setChecked(true);
 				} else {
@@ -159,7 +159,7 @@ public class DesktopControllerProvider implements IControllerProvider {
 
 		// 2nd remove the controllers not found in the first loop
 //		Log.log("Check for disconnected controllers...");
-		Iterator<Entry<Integer, DesktopController>> iter = this.connected.entrySet().iterator();
+		Iterator<Entry<Integer, DesktopController>> iter = connected.entrySet().iterator();
 		while(iter.hasNext()) {
 			Entry<Integer, DesktopController> entry = iter.next();
 			DesktopController controller = entry.getValue();
@@ -177,7 +177,7 @@ public class DesktopControllerProvider implements IControllerProvider {
 		
 		// 3rd update the state of all remaining controllers
 //		Log.log("Update controllers...");
-		for(DesktopController controller : this.connected.values()) {
+		for(DesktopController controller : connected.values()) {
 			jniWrapper.updateControllerStatus(controller);
 		}
 	}

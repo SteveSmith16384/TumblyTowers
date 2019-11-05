@@ -23,6 +23,8 @@ import org.gamepad4j.IAxisListener;
  */
 public class ColorBoxPanel extends JPanel implements IAxisListener {
 	
+	private static final long serialVersionUID = 1L;
+
 	public int percent = 23;
 	public boolean positive = true;
 	

@@ -36,6 +36,8 @@ import org.gamepad4j.util.Log;
  */
 public class MappingToolWindow extends JFrame implements IControllerListener {
 
+	private static final long serialVersionUID = 1L;
+
 	/** Stores ImageIcon instances for various pads. */
 	public static Map<Long, ImageIcon> padImageMap = new HashMap<Long, ImageIcon>();
 
@@ -57,7 +59,7 @@ public class MappingToolWindow extends JFrame implements IControllerListener {
 			filenameProps.load(in);
 			
 			// Store controller-specific images
-			Enumeration keys = filenameProps.keys();
+			Enumeration<Object> keys = filenameProps.keys();
 			while(keys.hasMoreElements()) {
 				String key = (String)keys.nextElement();
 				String imageFilename = filenameProps.getProperty(key);

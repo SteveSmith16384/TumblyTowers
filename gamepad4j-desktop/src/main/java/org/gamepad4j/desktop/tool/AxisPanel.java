@@ -21,6 +21,8 @@ import org.gamepad4j.IAxis;
  */
 public class AxisPanel extends JPanel {
 
+	private static final long serialVersionUID = 1L;
+
 	/** Red/green color bar panel. */
 	private ColorBoxPanel colorPanel = null;
 

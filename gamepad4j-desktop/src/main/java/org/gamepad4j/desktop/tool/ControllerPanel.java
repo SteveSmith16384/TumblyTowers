@@ -25,6 +25,8 @@ import org.gamepad4j.IController;
  */
 public class ControllerPanel extends JPanel {
 
+	private static final long serialVersionUID = 1L;
+
 	public ControllerPanel(IController controller) {
 	    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 //	    setBorder(BorderFactory.createLineBorder(Color.GREEN));
