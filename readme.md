@@ -30,11 +30,17 @@ Be the first to build a tower to above the finish line.
 All assets and code are licenced under MIT.
 
 
+### DEVELOPING
+* Compile it by running compile.bat.  Once compiled, you can run it with run.bat.
+
+
 ### CREDITS
 Gamepad Code thanks to Marcel Schoen (https://github.com/marcelschoen/gamepad4j)
 Uses JBox2D
+Background gfx from https://opengameart.org/content/nine-cartoon-backdrops
 
 Thanks for playing!
 
 Stephen
 https://twitter.com/stephencsmith
+
