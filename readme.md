@@ -35,9 +35,9 @@ All assets and code are licenced under MIT.
 
 
 ### CREDITS
-Gamepad Code thanks to Marcel Schoen (https://github.com/marcelschoen/gamepad4j)
-Uses JBox2D
-Background gfx from https://opengameart.org/content/nine-cartoon-backdrops
+* Gamepad Code thanks to Marcel Schoen (https://github.com/marcelschoen/gamepad4j)
+* Uses JBox2D
+* Background gfx from https://opengameart.org/content/nine-cartoon-backdrops
 
 Thanks for playing!
 
