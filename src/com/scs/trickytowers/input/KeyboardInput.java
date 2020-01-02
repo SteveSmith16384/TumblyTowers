@@ -11,7 +11,7 @@ public class KeyboardInput implements IInputDevice, KeyListener {
 	public static final int KEYBOARD2_ID = -2;
 	
 	private volatile boolean left, right, up, down, fire;
-	private boolean lastMoveWasLeft = false;
+	//private boolean lastMoveWasLeft = false;
 	private int id;
 
 	public KeyboardInput(JFrame frame, int _id) {
@@ -29,18 +29,18 @@ public class KeyboardInput implements IInputDevice, KeyListener {
 
 	@Override
 	public boolean isLeftPressed() {
-		if (left) {
+		/*if (left) {
 			lastMoveWasLeft = true;
-		}
+		}*/
 		return left;
 	}
 
 
 	@Override
 	public boolean isRightPressed() {
-		if (right) {
+		/*if (right) {
 			lastMoveWasLeft = false;
-		}
+		}*/
 		return right;
 	}
 
@@ -56,12 +56,12 @@ public class KeyboardInput implements IInputDevice, KeyListener {
 		return down;
 	}
 
-
+/*
 	@Override
 	public int getAngle() {
 		return lastMoveWasLeft ? 210: 330;
 	}
-
+*/
 
 	@Override
 	public boolean isFirePressed() {
@@ -185,12 +185,12 @@ public class KeyboardInput implements IInputDevice, KeyListener {
 		// Do nothing
 	}
 
-
+/*
 	@Override
 	public float getStickDistance() {
 		return 1;
 	}
-
+*/
 
 	@Override
 	public int getID() {
@@ -211,6 +211,12 @@ public class KeyboardInput implements IInputDevice, KeyListener {
 		up = false;
 		down = false;
 		
+	}
+
+
+	@Override
+	public void readEvents() {
+		// Not required
 	}
 
 }

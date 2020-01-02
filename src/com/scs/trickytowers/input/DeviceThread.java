@@ -1,5 +1,5 @@
 package com.scs.trickytowers.input;
-
+/*
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -27,14 +27,6 @@ public final class DeviceThread extends Thread {
 
 		this.setDaemon(true);
 
-		try {
-			Controllers.initialize();
-			Runtime.getRuntime().addShutdownHook(new DeviceShutdownHook());
-		} catch (Throwable ex) {
-			ex.printStackTrace();
-			USE_CONTROLLERS = false;
-		}
-
 		keyboard1 = new KeyboardInput(window, KeyboardInput.KEYBOARD1_ID);
 		keyboard2 = new KeyboardInput(window, KeyboardInput.KEYBOARD2_ID);
 
@@ -53,9 +45,6 @@ public final class DeviceThread extends Thread {
 						if (gamepad.isButtonPressed(ButtonID.FACE_DOWN)) {
 							boolean found = false;
 							synchronized (createdDevices) {
-								/*if (!createdDevices.contains(gamepad)) {
-									this.createController(new PS4Controller(gamepad));
-								}*/
 								for (IInputDevice exists : this.createdDevices) {
 									if (exists.getID() == gamepad.getDeviceID()) {
 										found = true;
@@ -155,3 +144,4 @@ public final class DeviceThread extends Thread {
 	}
 
 }
+*/

@@ -11,7 +11,6 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import org.gamepad4j.Controllers;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
@@ -20,20 +19,19 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.dynamics.contacts.Contact;
 
-import ssmith.awt.ImageCache;
-import ssmith.lang.Functions;
-import ssmith.util.TSArrayList;
-import ssmith.util.TimedString;
-
 import com.scs.trickytowers.entity.Entity;
 import com.scs.trickytowers.entity.VibratingPlatform;
 import com.scs.trickytowers.entity.components.ICollideable;
 import com.scs.trickytowers.entity.components.IDrawable;
 import com.scs.trickytowers.entity.components.IProcessable;
 import com.scs.trickytowers.entity.systems.DrawingSystem;
-import com.scs.trickytowers.input.DeviceThread;
 import com.scs.trickytowers.input.IInputDevice;
 import com.scs.trickytowers.input.NewControllerListener;
+
+import ssmith.awt.ImageCache;
+import ssmith.lang.Functions;
+import ssmith.util.TSArrayList;
+import ssmith.util.TimedString;
 
 public class Main_TumblyTowers implements ContactListener, NewControllerListener, KeyListener {
 
@@ -65,9 +63,9 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 		window = new MainWindow(this);
 
 		try {
-			DeviceThread dt = new DeviceThread(window);
+			/*DeviceThread dt = new DeviceThread(window);
 			dt.addListener(this);
-			dt.start();
+			dt.start();*/
 
 			Statics.img_cache = ImageCache.GetInstance(null);
 			Statics.img_cache.c = window;
@@ -122,9 +120,9 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 			}
 
 			// Player input first
-			if (DeviceThread.USE_CONTROLLERS) {
+			/*if (DeviceThread.USE_CONTROLLERS) {
 				Controllers.checkControllers();
-			}
+			}*/
 
 			for (Player player : this.players) {
 				//this.playerInputSystem.process(player);

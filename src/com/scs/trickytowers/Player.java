@@ -30,6 +30,8 @@ public class Player {
 
 
 	public void process() {
+		input.readEvents();
+		
 		if (currentShape != null && currentShape.body != null) { // body is null if shape dropped off the bottom
 			//if (player.currentShape.body.getLinearVelocity().length() <= 0) {//.isActive()) {//player.currentShape.body.getWorldCenter().y > player.prevY) { // Still moving
 			//if (currentShape.body.getWorldCenter().y < Statics.WIN_HEIGHT || Math.abs(currentShape.body.getWorldCenter().y - prevShapeY) > 0.1f) { // Still moving

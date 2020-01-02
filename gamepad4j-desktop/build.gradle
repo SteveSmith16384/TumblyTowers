@@ -1,4 +1,0 @@
-
-dependencies {
-    compile project(':gamepad4j-api')
-}

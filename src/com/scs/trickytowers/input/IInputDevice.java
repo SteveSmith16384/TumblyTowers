@@ -2,6 +2,8 @@ package com.scs.trickytowers.input;
 
 public interface IInputDevice {
 
+	void readEvents();
+	
 	int getID();
 	
 	boolean isLeftPressed();
@@ -12,11 +14,11 @@ public interface IInputDevice {
 	
 	boolean isSpinRightPressed();
 	
-	float getStickDistance();
+	//float getStickDistance();
 	
 	boolean isFirePressed();
 	
-	int getAngle();
+	//int getAngle();
 
 	String toString();
 	
