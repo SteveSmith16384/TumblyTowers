@@ -89,7 +89,6 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 		final int positionIterations = 4;//3;//2;
 
 		while (window.isVisible()) {
-
 			// Check for new players
 			synchronized (newControllers) {
 				while (this.newControllers.isEmpty() == false) {
@@ -359,7 +358,9 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 	public void keyReleased(KeyEvent ke) {
 		if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			System.exit(0);
-		} else if (ke.getKeyCode() == KeyEvent.VK_1) {
+		} else if (ke.getKeyCode() == KeyEvent.VK_R) {
+			this.restartLevel = true;
+			this.restartOn = 0;
 		}
 
 	}
