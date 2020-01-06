@@ -46,7 +46,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 	private List<Contact> collisions = new LinkedList<>();
 	private int[] leftPos;
 	private int[] rightPos;
-	private TimedString msg = new TimedString(2000);
+	private TimedString timedMessage = new TimedString(2000);
 
 	private boolean restartLevel = false;
 	private long restartOn;
@@ -96,7 +96,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 						this.loadPlayer(this.newControllers.remove(0));
 					} else {
 						this.newControllers.clear();
-						msg.setText("No room left!");
+						timedMessage.setText("No room left for more players!");
 					}
 				}
 			}
@@ -106,7 +106,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 				this.startLevel();
 			}
 
-			msg.process(interpol);
+			timedMessage.process(interpol);
 
 			this.entities.refresh();
 
@@ -141,11 +141,12 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 			g.drawImage(this.background, 0, 0, this.window);
 
 			g.setColor(Color.black);
-			g.drawString(msg.getString(), 20, 50);
+			g.drawString(timedMessage.getString(), 20, 50);
 			if (Statics.DEBUG) {
-			g.drawString("Num Entities: " + this.entities.size(), 20, 70);
+				g.drawString("Num Entities: " + this.entities.size(), 20, 70);
 			} else {
 				g.drawString("PRESS FIRE TO JOIN!", 20, 70);
+				g.drawString("PRESS 'R' TO RESTART", 20, 90);
 			}
 			g.setColor(Color.gray);
 			g.drawLine(0, (int)(Statics.WIN_HEIGHT * Statics.LOGICAL_TO_PIXELS), window.getWidth(), (int)(Statics.WIN_HEIGHT * Statics.LOGICAL_TO_PIXELS));
@@ -188,7 +189,6 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 
 		leftPos = new int[this.players.size()];
 		rightPos = new int[this.players.size()];
-		//float secWidth = Statics.WORLD_WIDTH_LOGICAL/(this.players.size()+1);
 		float bucketWidth = Statics.WORLD_WIDTH_LOGICAL/7;
 
 		if (this.players.size() == 1) {
@@ -385,7 +385,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 
 
 	public void playerWon(Player player) {
-		msg.setText("Player " + player.id_ZB + " has won!");
+		timedMessage.setText("Player " + player.id_ZB + " has won!");
 		this.restartLevel = true;
 		this.restartOn = System.currentTimeMillis() + 4000;
 
