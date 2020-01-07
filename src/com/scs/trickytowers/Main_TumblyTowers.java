@@ -26,6 +26,7 @@ import com.scs.trickytowers.entity.components.IDrawable;
 import com.scs.trickytowers.entity.components.IProcessable;
 import com.scs.trickytowers.entity.systems.DrawingSystem;
 import com.scs.trickytowers.input.IInputDevice;
+import com.scs.trickytowers.input.KeyboardInput;
 import com.scs.trickytowers.input.NewControllerListener;
 
 import ssmith.awt.ImageCache;
@@ -41,7 +42,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 	private TSArrayList<Entity> entities;
 	private List<IInputDevice> newControllers = new ArrayList<>();
 	private List<Player> players = new ArrayList<>();
-
+	private boolean keyboard1Created, keyboard2Created;
 	private DrawingSystem drawingSystem;
 	private List<Contact> collisions = new LinkedList<>();
 	private int[] leftPos;
@@ -93,7 +94,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 			synchronized (newControllers) {
 				while (this.newControllers.isEmpty() == false) {
 					if (this.players.size() < 3) {
-						this.loadPlayer(this.newControllers.remove(0));
+						this.createPlayer(this.newControllers.remove(0));
 					} else {
 						this.newControllers.clear();
 						timedMessage.setText("No room left for more players!");
@@ -325,7 +326,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 	}
 
 
-	private void loadPlayer(IInputDevice input) {
+	private void createPlayer(IInputDevice input) {
 		Player player = new Player(this, input);
 		synchronized (players) {
 			this.players.add(player);
@@ -356,7 +357,27 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 
 	@Override
 	public void keyReleased(KeyEvent ke) {
-		if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
+		if (ke.getKeyCode() == KeyEvent.VK_DOWN) {
+			if (this.keyboard1Created == false) {
+				keyboard1Created = true;
+				if (this.players.size() < 3) {
+					this.createPlayer(new KeyboardInput(window, KeyboardInput.KEYBOARD1_ID));
+				} else {
+					this.newControllers.clear();
+					timedMessage.setText("No room left for more players!");
+				}
+			}
+		} else if (ke.getKeyCode() == KeyEvent.VK_S) {
+			if (this.keyboard2Created == false) {
+				keyboard2Created = true;
+				if (this.players.size() < 3) {
+					this.createPlayer(new KeyboardInput(window, KeyboardInput.KEYBOARD2_ID));
+				} else {
+					this.newControllers.clear();
+					timedMessage.setText("No room left for more players!");
+				}
+			}
+		} else if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			System.exit(0);
 		} else if (ke.getKeyCode() == KeyEvent.VK_R) {
 			this.restartLevel = true;

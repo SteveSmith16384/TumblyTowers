@@ -7,11 +7,10 @@ import javax.swing.JFrame;
 
 public class KeyboardInput implements IInputDevice, KeyListener {
 
-	public static final int KEYBOARD1_ID = -1;
-	public static final int KEYBOARD2_ID = -2;
+	public static final int KEYBOARD1_ID = -1; // Arrow keys
+	public static final int KEYBOARD2_ID = -2; // WASD
 	
 	private volatile boolean left, right, up, down, fire;
-	//private boolean lastMoveWasLeft = false;
 	private int id;
 
 	public KeyboardInput(JFrame frame, int _id) {
@@ -56,12 +55,6 @@ public class KeyboardInput implements IInputDevice, KeyListener {
 		return down;
 	}
 
-/*
-	@Override
-	public int getAngle() {
-		return lastMoveWasLeft ? 210: 330;
-	}
-*/
 
 	@Override
 	public boolean isFirePressed() {
@@ -91,7 +84,6 @@ public class KeyboardInput implements IInputDevice, KeyListener {
 
 			case KeyEvent.VK_CONTROL:
 				fire = true;
-				//firePressedTime = System.currentTimeMillis();
 				break;
 			}
 		} else if (id == KEYBOARD2_ID) {
@@ -114,7 +106,6 @@ public class KeyboardInput implements IInputDevice, KeyListener {
 
 			case KeyEvent.VK_SPACE:
 				fire = true;
-				//firePressedTime = System.currentTimeMillis();
 				break;
 			}
 
@@ -185,12 +176,6 @@ public class KeyboardInput implements IInputDevice, KeyListener {
 		// Do nothing
 	}
 
-/*
-	@Override
-	public float getStickDistance() {
-		return 1;
-	}
-*/
 
 	@Override
 	public int getID() {

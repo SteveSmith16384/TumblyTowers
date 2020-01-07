@@ -31,6 +31,8 @@ public class MainWindow extends JFrame {
 
 		this.createBufferStrategy(2);
 		BS = this.getBufferStrategy();
+		
+		this.requestFocus();
 	}
 
 

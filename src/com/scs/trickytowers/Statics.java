@@ -8,7 +8,7 @@ import ssmith.awt.ImageCache;
 
 public class Statics {
 
-	public static final boolean FULL_SCREEN = true;
+	public static final boolean FULL_SCREEN = false;
 	public static final boolean DEBUG = false;
 	
 	public static final int FPS = 30;
