@@ -1,6 +1,7 @@
 package com.scs.trickytowers;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
@@ -32,7 +33,6 @@ import com.scs.trickytowers.input.NewControllerListener;
 import ssmith.awt.ImageCache;
 import ssmith.lang.Functions;
 import ssmith.util.TSArrayList;
-import ssmith.util.TimedString;
 
 public class Main_TumblyTowers implements ContactListener, NewControllerListener, KeyListener {
 
@@ -47,7 +47,8 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 	private List<Contact> collisions = new LinkedList<>();
 	private int[] leftPos;
 	private int[] rightPos;
-	private TimedString timedMessage = new TimedString(2000);
+	//private TimedString timedMessage = new TimedString(2000);
+	private Font font;
 
 	private boolean restartLevel = false;
 	private long restartOn;
@@ -65,6 +66,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 		window = new MainWindow(this);
 
 		try {
+			font = new Font("Helvetica", Font.BOLD, 24);
 			Statics.img_cache = ImageCache.GetInstance(null);
 			Statics.img_cache.c = window;
 
@@ -96,7 +98,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 						this.createPlayer(this.newControllers.remove(0));
 					} else {
 						this.newControllers.clear();
-						timedMessage.setText("No room left for more players!");
+						this.addLogEntry("No room left for more players!");
 					}
 				}
 			}
@@ -106,7 +108,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 				this.startLevel();
 			}
 
-			timedMessage.process(interpolMillis);
+			//timedMessage.process(interpolMillis);
 
 			this.entities.refresh();
 
@@ -136,19 +138,21 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 
 			// Draw screen
 			Graphics g = window.BS.getDrawGraphics();
+			g.setFont(font);
+			
 			//g.setColor(Color.white);
 			//g.fillRect(0, 0, Statics.WINDOW_WIDTH, Statics.WINDOW_HEIGHT);
 			g.drawImage(this.background, 0, 0, this.window);
 
-			g.setColor(Color.black);
-			g.drawString(timedMessage.getString(), 20, 50);
-			if (Statics.DEBUG) {
-				g.drawString("Num Entities: " + this.entities.size(), 20, 70);
-			} else {
-				g.drawString("PRESS FIRE TO JOIN!", 20, 70);
-				g.drawString("PRESS 'R' TO RESTART", 20, 90);
+			g.setColor(Color.white);
+			//g.drawString(timedMessage.getString(), 20, 50);
+			for (int i=0 ; i<this.log.size() ; i++) {
+				g.drawString(this.log.get(i), 20, 200-(i*20));
 			}
-			g.setColor(Color.gray);
+			/*if (!Statics.RELEASE_MODE) {
+				g.drawString("Num Entities: " + this.entities.size(), 400, 70);
+			}*/
+			g.setColor(Color.white);
 			g.drawLine(0, (int)(Statics.LOGICAL_WINNING_HEIGHT * Statics.LOGICAL_TO_PIXELS), window.getWidth(), (int)(Statics.LOGICAL_WINNING_HEIGHT * Statics.LOGICAL_TO_PIXELS));
 
 			drawingSystem.startOfDrawing(g);
@@ -180,6 +184,10 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 
 	private void startLevel() {
 		this.entities = new TSArrayList<Entity>();
+
+		this.log.clear();
+		this.addLogEntry("PRESS FIRE TO JOIN!");
+		this.addLogEntry("PRESS 'R' TO RESTART");
 
 		Vec2 gravity = new Vec2(0f, 10f);
 		world = new World(gravity);
@@ -349,7 +357,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 
 	public void addEntity(Entity o) {
 		synchronized (entities) {
-			if (Statics.DEBUG) {
+			if (!Statics.RELEASE_MODE) {
 				if (this.entities.contains(o)) {
 					throw new RuntimeException(o + " has already been added");
 				}
@@ -374,7 +382,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 					this.createPlayer(new KeyboardInput(window, KeyboardInput.KEYBOARD1_ID));
 				} else {
 					this.newControllers.clear();
-					timedMessage.setText("No room left for more players!");
+					this.addLogEntry("No room left for more players!");
 				}
 			}
 		} else if (ke.getKeyCode() == KeyEvent.VK_S) {
@@ -384,7 +392,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 					this.createPlayer(new KeyboardInput(window, KeyboardInput.KEYBOARD2_ID));
 				} else {
 					this.newControllers.clear();
-					timedMessage.setText("No room left for more players!");
+					this.addLogEntry("No room left for more players!");
 				}
 			}
 		} else if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
@@ -416,7 +424,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 
 
 	public void playerWon(Player player) {
-		timedMessage.setText("Player " + player.id_ZB + " has won!");
+		this.addLogEntry("Player " + player.id_ZB + " has won!");
 		this.restartLevel = true;
 		this.restartOn = System.currentTimeMillis() + 4000;
 
@@ -429,6 +437,14 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 			}
 		}
 
+	}
+	
+	
+	private void addLogEntry(String s) {
+		this.log.add(s);
+		while (this.log.size() > 5) {
+			this.log.remove(0);
+		}
 	}
 }
 

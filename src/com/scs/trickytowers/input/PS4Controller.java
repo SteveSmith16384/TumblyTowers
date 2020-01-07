@@ -1,5 +1,7 @@
 package com.scs.trickytowers.input;
 
+import com.scs.trickytowers.Statics;
+
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.Event;
@@ -9,17 +11,17 @@ public final class PS4Controller implements IInputDevice {
 
 	private Controller gamepad;
 	private long lastEventTime;
-/*
+	/*
 	private static final int FACE_UP = 0; // todo - set
 	private static final int FACE_DOWN = 0; // todo - set
 	private static final int FACE_LEFT = 0; // todo - set
 	private static final int FACE_RIGHT = 0; // todo - set
-*/
-	
+	 */
+
 	private boolean leftPressed, rightPressed;
 	private boolean spinLeftPressed, spinRightPressed;
 	private boolean firePressed;
-	
+
 	public PS4Controller(Controller _gamepad) {
 		gamepad = _gamepad;
 	}
@@ -44,17 +46,17 @@ public final class PS4Controller implements IInputDevice {
 
 			float value = event.getValue();
 			//if (value == 0 || value < -0.5 || value > 0.5) {
-				
+			Component comp = event.getComponent();
+			if (Statics.SHOW_CONTROLLER_EVENTS) {
 				StringBuffer str = new StringBuffer(gamepad.getName());
 				str.append(" at ");
 				str.append(event.getNanos()).append(", ");
-				Component comp = event.getComponent();
 				str.append(comp.getName()).append(" changed to ");
 
 				if (comp.isAnalog()) {
 					str.append(value);
 					/*if (comp.getIdentifier()) {
-					
+
 					}*/
 				} else {
 					if (value == 1.0f) {
@@ -64,8 +66,10 @@ public final class PS4Controller implements IInputDevice {
 					}
 				}
 				System.out.println(str.toString());
-				
-				
+			}
+			if (comp.isAnalog()) {
+				//this.leftPressed = value > .5f && event.getComponent()
+			}
 			//}
 		}		
 	}
