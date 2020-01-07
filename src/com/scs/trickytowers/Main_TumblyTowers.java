@@ -47,10 +47,9 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 	private List<Contact> collisions = new LinkedList<>();
 	private int[] leftPos;
 	private int[] rightPos;
-	//private TimedString timedMessage = new TimedString(2000);
 	private Font font;
 
-	private boolean restartLevel = false;
+	private boolean restartLevel = false, createKeyboard1 = false, createKeyboard2 = false;
 	private long restartOn;
 	private Image background;
 	private ArrayList<String> log = new ArrayList<String>(); 
@@ -92,6 +91,28 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 			long start = System.currentTimeMillis();
 
 			// Check for new players
+			if (this.createKeyboard1) {
+				this.createKeyboard1 = false;
+				if (this.keyboard1Created == false) {
+					keyboard1Created = true;
+					if (this.players.size() < 3) {
+						this.createPlayer(new KeyboardInput(window, KeyboardInput.KEYBOARD1_ID));
+					} else {
+						this.addLogEntry("No room left for more players!");
+					}
+				}
+			}
+			if (this.createKeyboard2) {
+				this.createKeyboard2 = false;
+				if (this.keyboard2Created == false) {
+					keyboard2Created = true;
+					if (this.players.size() < 3) {
+						this.createPlayer(new KeyboardInput(window, KeyboardInput.KEYBOARD2_ID));
+					} else {
+						this.addLogEntry("No room left for more players!");
+					}
+				}
+			}
 			synchronized (newControllers) {
 				while (this.newControllers.isEmpty() == false) {
 					if (this.players.size() < 3) {
@@ -188,13 +209,12 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 		this.log.clear();
 		this.addLogEntry("PRESS FIRE TO JOIN!");
 		this.addLogEntry("PRESS 'R' TO RESTART");
+		this.addLogEntry("Keyboard 1 is W, A, S, D and Space");
+		this.addLogEntry("Keyboard 2 is Arrows and Ctrl");
 
 		Vec2 gravity = new Vec2(0f, 10f);
 		world = new World(gravity);
 		world.setContactListener(this);
-
-		//Edge bottom = new Edge(this, 0, (float)(Statics.WORLD_HEIGHT_LOGICAL-10), Statics.WORLD_WIDTH_LOGICAL, (float)(Statics.WORLD_HEIGHT_LOGICAL-10));
-		//this.addEntity(bottom);
 
 		leftPos = new int[this.players.size()];
 		rightPos = new int[this.players.size()];
@@ -375,8 +395,9 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 
 	@Override
 	public void keyReleased(KeyEvent ke) {
-		if (ke.getKeyCode() == KeyEvent.VK_DOWN) {
-			if (this.keyboard1Created == false) {
+		if (ke.getKeyCode() == KeyEvent.VK_CONTROL) {
+			this.createKeyboard1 = true;
+			/*if (this.keyboard1Created == false) {
 				keyboard1Created = true;
 				if (this.players.size() < 3) {
 					this.createPlayer(new KeyboardInput(window, KeyboardInput.KEYBOARD1_ID));
@@ -384,9 +405,10 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 					this.newControllers.clear();
 					this.addLogEntry("No room left for more players!");
 				}
-			}
-		} else if (ke.getKeyCode() == KeyEvent.VK_S) {
-			if (this.keyboard2Created == false) {
+			}*/
+		} else if (ke.getKeyCode() == KeyEvent.VK_SPACE) {
+			this.createKeyboard2 = true;
+			/*if (this.keyboard2Created == false) {
 				keyboard2Created = true;
 				if (this.players.size() < 3) {
 					this.createPlayer(new KeyboardInput(window, KeyboardInput.KEYBOARD2_ID));
@@ -394,7 +416,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 					this.newControllers.clear();
 					this.addLogEntry("No room left for more players!");
 				}
-			}
+			}*/
 		} else if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			System.exit(0);
 		} else if (ke.getKeyCode() == KeyEvent.VK_R) {
@@ -416,6 +438,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 			for (Player player : this.players) {
 				if (player.input == input) {
 					this.players.remove(player);
+					this.restartLevel = true;
 					break;
 				}
 			}
