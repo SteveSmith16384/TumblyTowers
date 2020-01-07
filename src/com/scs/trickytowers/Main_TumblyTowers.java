@@ -84,12 +84,14 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 
 
 	private void gameLoop() {
-		long interpol = 30;
-		final float timeStep = 1.0f / Statics.FPS;//10.f;
+		final long interpolMillis = 1000/Statics.FPS;
+		final float timeStepSecs = 1.0f / Statics.FPS;//10.f;
 		final int velocityIterations = 6;//8;//6;
 		final int positionIterations = 4;//3;//2;
 
 		while (window.isVisible()) {
+			long start = System.currentTimeMillis();
+
 			// Check for new players
 			synchronized (newControllers) {
 				while (this.newControllers.isEmpty() == false) {
@@ -107,7 +109,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 				this.startLevel();
 			}
 
-			timedMessage.process(interpol);
+			timedMessage.process(interpolMillis);
 
 			this.entities.refresh();
 
@@ -115,7 +117,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 			for (Entity e : this.entities) {
 				if (e instanceof IProcessable) {
 					IProcessable id = (IProcessable)e;
-					id.preprocess(interpol);
+					id.preprocess(interpolMillis);
 				}
 			}
 
@@ -130,7 +132,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 			}
 
 			collisions.clear();
-			world.step(timeStep, velocityIterations, positionIterations);
+			world.step(timeStepSecs, velocityIterations, positionIterations);
 			while (collisions.isEmpty() == false) {
 				processCollision(collisions.remove(0));
 			}
@@ -160,18 +162,19 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 				}
 				if (e instanceof IProcessable) {
 					IProcessable id = (IProcessable)e;
-					id.postprocess(interpol);
+					id.postprocess(interpolMillis);
 				}
 			}
 			drawingSystem.endOfDrawing();
-
 			window.BS.show();
 
-			try {
-				interpol = 1000/Statics.FPS;
-				Thread.sleep(interpol); // todo - calc start-end diff
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			long diff = System.currentTimeMillis() - start;
+			if (diff < interpolMillis) {
+				try {
+					Thread.sleep(interpolMillis - diff);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		System.exit(0);

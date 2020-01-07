@@ -13,7 +13,7 @@ public abstract class Entity {
 	public int id;
 	public Point tmpPoint = new Point();
 	protected Main_TumblyTowers main;
-	public String name; // todo - remove
+	private String name;
 	
 	public Entity(Main_TumblyTowers _main, String _name) {
 		super();

@@ -14,11 +14,6 @@ public final class PS4Controller implements IInputDevice {
 	private static final int FACE_DOWN = 0; // todo - set
 	private static final int FACE_LEFT = 0; // todo - set
 	private static final int FACE_RIGHT = 0; // todo - set
-/*
-	private RealtimeInterval leftTimer = new RealtimeInterval(150, true); // todo - make const
-	private RealtimeInterval rightTimer = new RealtimeInterval(150, true);
-	private RealtimeInterval spinLeftTimer = new RealtimeInterval(150, true);
-	private RealtimeInterval spinRightTimer = new RealtimeInterval(150, true);
 */
 	
 	private boolean leftPressed, rightPressed;

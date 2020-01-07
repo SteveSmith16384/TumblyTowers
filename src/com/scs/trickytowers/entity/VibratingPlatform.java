@@ -2,14 +2,15 @@ package com.scs.trickytowers.entity;
 
 import java.awt.Color;
 
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyType;
-
-import ssmith.util.Timer;
 
 import com.scs.trickytowers.BodyUserData;
 import com.scs.trickytowers.JBox2DFunctions;
 import com.scs.trickytowers.Main_TumblyTowers;
 import com.scs.trickytowers.entity.components.IProcessable;
+
+import ssmith.util.Timer;
 
 public class VibratingPlatform extends PhysicalEntity implements IProcessable {
 
@@ -26,7 +27,7 @@ public class VibratingPlatform extends PhysicalEntity implements IProcessable {
 	@Override
 	public void preprocess(long interpol) {
 		if (timer.hasHit(interpol)) {
-			//todo - re-add this.body.applyForceToCenter(new Vec2(-100000, 0));
+			this.body.applyForceToCenter(new Vec2(-100000, 0)); // scs new
 		}
 		
 	}

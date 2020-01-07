@@ -24,7 +24,7 @@ public final class TimedString {
 	}
 	
 	
-	public void process(long interpol) {
+	public void process(long interpolMillis) {
 		//timer += interpol;
 		if (this.expires < System.currentTimeMillis()) {
 			this.text = "";
