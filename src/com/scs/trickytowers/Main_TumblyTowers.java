@@ -459,7 +459,6 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 				}
 			}
 		}
-
 	}
 	
 	
