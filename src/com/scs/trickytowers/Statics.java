@@ -16,8 +16,8 @@ public class Statics {
 	public static final int WINDOW_WIDTH = 800; // Only used when windowed
 	public static final int WINDOW_HEIGHT = 600; // Only used when windowed
 
-	public static final int WORLD_WIDTH_LOGICAL = 800;// = (int)(WINDOW_WIDTH / LOGICAL_TO_PIXELS);
-	public static final int WORLD_HEIGHT_LOGICAL = 600;// = (int)(WINDOW_HEIGHT / LOGICAL_TO_PIXELS);
+	public static final int WORLD_WIDTH_LOGICAL = 400;// = (int)(WINDOW_WIDTH / LOGICAL_TO_PIXELS);
+	public static final int WORLD_HEIGHT_LOGICAL = 300;// = (int)(WINDOW_HEIGHT / LOGICAL_TO_PIXELS);
 
 	public static float LOGICAL_TO_PIXELS;// = 3f;
 	public static final float LOGICAL_WINNING_HEIGHT = WORLD_HEIGHT_LOGICAL * 0.2f;

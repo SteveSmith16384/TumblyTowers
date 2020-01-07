@@ -52,6 +52,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 	private boolean restartLevel = false;
 	private long restartOn;
 	private Image background;
+	private ArrayList<String> log = new ArrayList<String>(); 
 
 	public static void main(String[] args) {
 		new Main_TumblyTowers();
