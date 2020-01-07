@@ -22,8 +22,9 @@ public class MainWindow extends JFrame {
 		} else {
 			this.setSize(Statics.WINDOW_WIDTH, Statics.WINDOW_HEIGHT);
 		}
-		Statics.WORLD_WIDTH_LOGICAL = (int)(this.getWidth() / Statics.LOGICAL_TO_PIXELS);
-		Statics.WORLD_HEIGHT_LOGICAL = (int)(this.getHeight() / Statics.LOGICAL_TO_PIXELS);
+		Statics.LOGICAL_TO_PIXELS = this.getHeight() / Statics.WORLD_HEIGHT_LOGICAL;
+		//Statics.WORLD_WIDTH_LOGICAL = (int)(this.getWidth() / Statics.LOGICAL_TO_PIXELS);
+		//Statics.WORLD_HEIGHT_LOGICAL = (int)(this.getHeight() / Statics.LOGICAL_TO_PIXELS);
 
 
 		this.setVisible(true);

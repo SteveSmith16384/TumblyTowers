@@ -62,7 +62,7 @@ public class Player {
 					currentShape.body.setTransform(newPos, newAngle);
 				}
 			} else { // Stopped moving
-				if (currentShape.getPosition().y < Statics.WIN_HEIGHT) {
+				if (currentShape.getPosition().y < Statics.LOGICAL_WINNING_HEIGHT) {
 					main.playerWon(this);
 				}
 				Statics.p("Shape removed");

@@ -150,7 +150,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 				g.drawString("PRESS 'R' TO RESTART", 20, 90);
 			}
 			g.setColor(Color.gray);
-			g.drawLine(0, (int)(Statics.WIN_HEIGHT * Statics.LOGICAL_TO_PIXELS), window.getWidth(), (int)(Statics.WIN_HEIGHT * Statics.LOGICAL_TO_PIXELS));
+			g.drawLine(0, (int)(Statics.LOGICAL_WINNING_HEIGHT * Statics.LOGICAL_TO_PIXELS), window.getWidth(), (int)(Statics.LOGICAL_WINNING_HEIGHT * Statics.LOGICAL_TO_PIXELS));
 
 			drawingSystem.startOfDrawing(g);
 			for (Entity e : this.entities) {
