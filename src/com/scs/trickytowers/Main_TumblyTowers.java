@@ -64,10 +64,6 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 		window = new MainWindow(this);
 
 		try {
-			/*DeviceThread dt = new DeviceThread(window);
-			dt.addListener(this);
-			dt.start();*/
-
 			Statics.img_cache = ImageCache.GetInstance(null);
 			Statics.img_cache.c = window;
 
@@ -231,7 +227,17 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 			player.vib = v;
 		}
 
-		background = Statics.img_cache.getImage("Castle Sunset.jpg", window.getWidth(), window.getHeight());
+		switch (Statics.rnd.nextInt(3)) {
+		case 0:
+			background = Statics.img_cache.getImage("Castle Sunset.jpg", window.getWidth(), window.getHeight());
+			break;
+		case 1:
+			background = Statics.img_cache.getImage("City Night.jpg", window.getWidth(), window.getHeight());
+			break;
+		case 2:
+			background = Statics.img_cache.getImage("Jungle Day.jpg", window.getWidth(), window.getHeight());
+			break;
+		}
 	}
 
 
