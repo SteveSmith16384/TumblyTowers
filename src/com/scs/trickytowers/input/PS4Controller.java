@@ -11,12 +11,6 @@ public final class PS4Controller implements IInputDevice {
 
 	private Controller gamepad;
 	private long lastEventTime;
-	/*
-	private static final int FACE_UP = 0; // todo - set
-	private static final int FACE_DOWN = 0; // todo - set
-	private static final int FACE_LEFT = 0; // todo - set
-	private static final int FACE_RIGHT = 0; // todo - set
-	 */
 
 	private boolean leftPressed, rightPressed;
 	private boolean spinLeftPressed, spinRightPressed;

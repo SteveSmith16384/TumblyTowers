@@ -30,6 +30,8 @@ import com.scs.trickytowers.input.IInputDevice;
 import com.scs.trickytowers.input.KeyboardInput;
 import com.scs.trickytowers.input.NewControllerListener;
 
+import net.java.games.input.Controller;
+import net.java.games.input.ControllerEnvironment;
 import ssmith.awt.ImageCache;
 import ssmith.lang.Functions;
 import ssmith.util.TSArrayList;
@@ -90,6 +92,9 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 		while (window.isVisible()) {
 			long start = System.currentTimeMillis();
 
+			Controller[] controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
+			// no jinput-dx8_64
+			
 			// Check for new players
 			if (this.createKeyboard1) {
 				this.createKeyboard1 = false;
