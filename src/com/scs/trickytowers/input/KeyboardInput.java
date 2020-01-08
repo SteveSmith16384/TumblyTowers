@@ -28,18 +28,12 @@ public class KeyboardInput implements IInputDevice, KeyListener {
 
 	@Override
 	public boolean isLeftPressed() {
-		/*if (left) {
-			lastMoveWasLeft = true;
-		}*/
 		return left;
 	}
 
 
 	@Override
 	public boolean isRightPressed() {
-		/*if (right) {
-			lastMoveWasLeft = false;
-		}*/
 		return right;
 	}
 
@@ -138,7 +132,6 @@ public class KeyboardInput implements IInputDevice, KeyListener {
 
 			case KeyEvent.VK_CONTROL:
 				fire = false;
-				//this.duration = System.currentTimeMillis() - this.firePressedTime;
 				break;
 
 			}
@@ -163,7 +156,6 @@ public class KeyboardInput implements IInputDevice, KeyListener {
 
 			case KeyEvent.VK_SPACE:
 				fire = false;
-				//firePressedTime = System.currentTimeMillis();
 				break;
 			}
 

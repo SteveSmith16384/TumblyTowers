@@ -9,7 +9,7 @@ public class Statics {
 	public static final boolean FULL_SCREEN = false;
 	public static final boolean RELEASE_MODE = false;
 	
-	public static final boolean SHOW_CONTROLLER_EVENTS = !RELEASE_MODE && true;
+	public static final boolean SHOW_CONTROLLER_EVENTS = !RELEASE_MODE && false;
 
 	public static final int FPS = 30;
 	public static final float STD_CELL_SIZE = 8f;

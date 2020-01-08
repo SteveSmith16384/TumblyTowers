@@ -3,6 +3,7 @@ package com.scs.trickytowers.input;
 import com.scs.trickytowers.Statics;
 
 import net.java.games.input.Component;
+import net.java.games.input.Component.Identifier;
 import net.java.games.input.Controller;
 import net.java.games.input.Event;
 import net.java.games.input.EventQueue;
@@ -41,6 +42,20 @@ public final class PS4Controller implements IInputDevice {
 			float value = event.getValue();
 			//if (value == 0 || value < -0.5 || value > 0.5) {
 			Component comp = event.getComponent();
+			if (comp.isAnalog() == false) { // Only interested in digital events
+				if (comp.getIdentifier() == Identifier.Button.LEFT) { // todo - check
+					this.leftPressed = value > 0.5f;
+				} else if (comp.getIdentifier() == Identifier.Button.RIGHT) { // todo - check
+					this.rightPressed = value > 0.5f;
+				} else if (comp.getIdentifier() == Identifier.Button.LEFT_THUMB) { // todo - check
+					this.spinLeftPressed = value > 0.5f;
+				} else if (comp.getIdentifier() == Identifier.Button.RIGHT_THUMB) { // todo - check
+					this.spinRightPressed = value > 0.5f;
+				} else if (comp.getIdentifier() == Identifier.Button.TOP) { // todo - check
+					this.firePressed = value > 0.5f;
+				}
+			}
+
 			if (Statics.SHOW_CONTROLLER_EVENTS) {
 				StringBuffer str = new StringBuffer(gamepad.getName());
 				str.append(" at ");
@@ -49,9 +64,6 @@ public final class PS4Controller implements IInputDevice {
 
 				if (comp.isAnalog()) {
 					str.append(value);
-					/*if (comp.getIdentifier()) {
-
-					}*/
 				} else {
 					if (value == 1.0f) {
 						str.append("On (" + value + ")");

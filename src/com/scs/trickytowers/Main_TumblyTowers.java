@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,21 +29,27 @@ import com.scs.trickytowers.entity.components.IProcessable;
 import com.scs.trickytowers.entity.systems.DrawingSystem;
 import com.scs.trickytowers.input.IInputDevice;
 import com.scs.trickytowers.input.KeyboardInput;
-import com.scs.trickytowers.input.NewControllerListener;
+import com.scs.trickytowers.input.PS4Controller;
 
+import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
+import net.java.games.input.Event;
+import net.java.games.input.EventQueue;
+import net.java.games.input.Component.Identifier;
 import ssmith.awt.ImageCache;
 import ssmith.lang.Functions;
 import ssmith.util.TSArrayList;
 
-public class Main_TumblyTowers implements ContactListener, NewControllerListener, KeyListener {
+public class Main_TumblyTowers implements ContactListener, KeyListener {
 
 	public World world;
 	public MainWindow window;
 
 	private TSArrayList<Entity> entities;
-	private List<IInputDevice> newControllers = new ArrayList<>();
+	private List<Controller> foundControllers = new ArrayList<Controller>();
+
+	private long lastCheckTime;
 	private List<Player> players = new ArrayList<>();
 	private boolean keyboard1Created, keyboard2Created;
 	private DrawingSystem drawingSystem;
@@ -63,6 +70,8 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 
 	public Main_TumblyTowers() {
 		super();
+
+		System.setProperty("net.java.games.input.librarypath", new File("libs/jinput").getAbsolutePath());
 
 		window = new MainWindow(this);
 
@@ -92,40 +101,21 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 		while (window.isVisible()) {
 			long start = System.currentTimeMillis();
 
-			Controller[] controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
-			// no jinput-dx8_64
-			
+			this.checkForControllers();
+
 			// Check for new players
 			if (this.createKeyboard1) {
 				this.createKeyboard1 = false;
 				if (this.keyboard1Created == false) {
 					keyboard1Created = true;
-					if (this.players.size() < 3) {
-						this.createPlayer(new KeyboardInput(window, KeyboardInput.KEYBOARD1_ID));
-					} else {
-						this.addLogEntry("No room left for more players!");
-					}
+					this.createPlayer(new KeyboardInput(window, KeyboardInput.KEYBOARD1_ID));
 				}
 			}
 			if (this.createKeyboard2) {
 				this.createKeyboard2 = false;
 				if (this.keyboard2Created == false) {
 					keyboard2Created = true;
-					if (this.players.size() < 3) {
-						this.createPlayer(new KeyboardInput(window, KeyboardInput.KEYBOARD2_ID));
-					} else {
-						this.addLogEntry("No room left for more players!");
-					}
-				}
-			}
-			synchronized (newControllers) {
-				while (this.newControllers.isEmpty() == false) {
-					if (this.players.size() < 3) {
-						this.createPlayer(this.newControllers.remove(0));
-					} else {
-						this.newControllers.clear();
-						this.addLogEntry("No room left for more players!");
-					}
+					this.createPlayer(new KeyboardInput(window, KeyboardInput.KEYBOARD2_ID));
 				}
 			}
 
@@ -133,8 +123,6 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 				restartLevel = false;
 				this.startLevel();
 			}
-
-			//timedMessage.process(interpolMillis);
 
 			this.entities.refresh();
 
@@ -146,13 +134,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 				}
 			}
 
-			// Player input first
-			/*if (DeviceThread.USE_CONTROLLERS) {
-				Controllers.checkControllers();
-			}*/
-
 			for (Player player : this.players) {
-				//this.playerInputSystem.process(player);
 				player.process();
 			}
 
@@ -165,8 +147,7 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 			// Draw screen
 			Graphics g = window.BS.getDrawGraphics();
 			g.setFont(font);
-			
-			//g.setColor(Color.white);
+
 			//g.fillRect(0, 0, Statics.WINDOW_WIDTH, Statics.WINDOW_HEIGHT);
 			g.drawImage(this.background, 0, 0, this.window);
 
@@ -361,22 +342,18 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 	}
 
 
-	@Override
-	public void newController(IInputDevice input) {
-		synchronized (newControllers) {
-			this.newControllers.add(input);
-		}
-	}
-
-
 	private void createPlayer(IInputDevice input) {
-		Player player = new Player(this, input);
-		synchronized (players) {
-			this.players.add(player);
+		if (this.players.size() < 3) {
+			this.createPlayer(new KeyboardInput(window, KeyboardInput.KEYBOARD1_ID));
+			Player player = new Player(this, input);
+			synchronized (players) {
+				this.players.add(player);
+			}
+			this.restartLevel = true;
+			this.restartOn = 0;
+		} else {
+			this.addLogEntry("No room left for more players!");
 		}
-		this.restartLevel = true;
-		this.restartOn = 0;
-
 	}
 
 
@@ -402,26 +379,8 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 	public void keyReleased(KeyEvent ke) {
 		if (ke.getKeyCode() == KeyEvent.VK_CONTROL) {
 			this.createKeyboard1 = true;
-			/*if (this.keyboard1Created == false) {
-				keyboard1Created = true;
-				if (this.players.size() < 3) {
-					this.createPlayer(new KeyboardInput(window, KeyboardInput.KEYBOARD1_ID));
-				} else {
-					this.newControllers.clear();
-					this.addLogEntry("No room left for more players!");
-				}
-			}*/
 		} else if (ke.getKeyCode() == KeyEvent.VK_SPACE) {
 			this.createKeyboard2 = true;
-			/*if (this.keyboard2Created == false) {
-				keyboard2Created = true;
-				if (this.players.size() < 3) {
-					this.createPlayer(new KeyboardInput(window, KeyboardInput.KEYBOARD2_ID));
-				} else {
-					this.newControllers.clear();
-					this.addLogEntry("No room left for more players!");
-				}
-			}*/
 		} else if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			System.exit(0);
 		} else if (ke.getKeyCode() == KeyEvent.VK_R) {
@@ -434,20 +393,6 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		//  Who uses this?!
-	}
-
-
-	@Override
-	public void controllerRemoved(IInputDevice input) {
-		synchronized (players) {
-			for (Player player : this.players) {
-				if (player.input == input) {
-					this.players.remove(player);
-					this.restartLevel = true;
-					break;
-				}
-			}
-		}
 	}
 
 
@@ -465,13 +410,40 @@ public class Main_TumblyTowers implements ContactListener, NewControllerListener
 			}
 		}
 	}
-	
-	
+
+
 	private void addLogEntry(String s) {
 		this.log.add(s);
 		while (this.log.size() > 5) {
 			this.log.remove(0);
 		}
 	}
-}
 
+
+	private void checkForControllers() {
+		if (lastCheckTime + 5000 < System.currentTimeMillis()) {
+			lastCheckTime = System.currentTimeMillis();
+			Controller[] controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
+			for (Controller c : controllers) {
+				if (this.foundControllers.contains(c) == false) {
+					boolean b = c.poll();
+					Event event = new Event();
+					EventQueue queue = c.getEventQueue();
+					while (queue.getNextEvent(event)) {
+						Component comp = event.getComponent();
+						if (comp.isAnalog() == false) { // Only interested in digital events
+							if (event.getValue() > 0.5f) {
+								if (comp.getIdentifier() == Identifier.Button.LEFT) { // todo - check
+									this.createPlayer(new PS4Controller(c));
+									this.foundControllers.add(c);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+	}
+
+}

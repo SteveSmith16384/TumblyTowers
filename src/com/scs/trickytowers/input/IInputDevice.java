@@ -14,12 +14,8 @@ public interface IInputDevice {
 	
 	boolean isSpinRightPressed();
 	
-	//float getStickDistance();
-	
 	boolean isFirePressed();
 	
-	//int getAngle();
-
 	String toString();
 	
 	void clearInputs();
