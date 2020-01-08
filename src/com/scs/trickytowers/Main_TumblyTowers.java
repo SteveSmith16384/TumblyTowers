@@ -344,7 +344,7 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 
 	private void createPlayer(IInputDevice input) {
 		if (this.players.size() < 3) {
-			this.createPlayer(new KeyboardInput(window, KeyboardInput.KEYBOARD1_ID));
+			//this.createPlayer(new KeyboardInput(window, KeyboardInput.KEYBOARD1_ID));
 			Player player = new Player(this, input);
 			synchronized (players) {
 				this.players.add(player);
@@ -421,22 +421,25 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 
 
 	private void checkForControllers() {
-		if (lastCheckTime + 5000 < System.currentTimeMillis()) {
-			lastCheckTime = System.currentTimeMillis();
-			Controller[] controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
-			for (Controller c : controllers) {
-				if (this.foundControllers.contains(c) == false) {
-					boolean b = c.poll();
-					Event event = new Event();
-					EventQueue queue = c.getEventQueue();
-					while (queue.getNextEvent(event)) {
-						Component comp = event.getComponent();
-						if (comp.isAnalog() == false) { // Only interested in digital events
-							if (event.getValue() > 0.5f) {
-								if (comp.getIdentifier() == Identifier.Button.LEFT) { // todo - check
-									this.createPlayer(new PS4Controller(c));
-									this.foundControllers.add(c);
-								}
+		if (lastCheckTime + 2000 > System.currentTimeMillis()) {
+			return;
+		}
+		lastCheckTime = System.currentTimeMillis();
+		Controller[] controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
+		for (Controller c : controllers) {
+			if (this.foundControllers.contains(c) == false) {
+				c.poll();
+				Event event = new Event();
+				EventQueue queue = c.getEventQueue();
+				while (queue.getNextEvent(event)) {
+					Component comp = event.getComponent();
+					if (comp.isAnalog() == false) { // Only interested in digital events
+						if (event.getValue() > 0.5f) {
+							if (comp.getIdentifier() == Identifier.Button._1) {
+								this.createPlayer(new PS4Controller(c));
+								this.foundControllers.add(c);
+								this.addLogEntry("Player joined");
+								// todo - log
 							}
 						}
 					}

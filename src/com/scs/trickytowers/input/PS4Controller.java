@@ -35,7 +35,7 @@ public final class PS4Controller implements IInputDevice {
 		/* For each object in the queue */
 		while (queue.getNextEvent(event)) {
 			if (event.getNanos() < lastEventTime) {
-				continue;
+				//continue;
 			}
 			this.lastEventTime = event.getNanos();
 
@@ -43,15 +43,15 @@ public final class PS4Controller implements IInputDevice {
 			//if (value == 0 || value < -0.5 || value > 0.5) {
 			Component comp = event.getComponent();
 			if (comp.isAnalog() == false) { // Only interested in digital events
-				if (comp.getIdentifier() == Identifier.Button.LEFT) { // todo - check
-					this.leftPressed = value > 0.5f;
-				} else if (comp.getIdentifier() == Identifier.Button.RIGHT) { // todo - check
-					this.rightPressed = value > 0.5f;
-				} else if (comp.getIdentifier() == Identifier.Button.LEFT_THUMB) { // todo - check
+				if (comp.getIdentifier() == Identifier.Axis.POV) { // d-pad
+					this.leftPressed = value >= 1f;
+					//} else if (comp.getIdentifier() == Identifier.Button.RIGHT) {
+					this.rightPressed = value == 0.5f;
+				} else if (comp.getIdentifier() == Identifier.Button._4) { // l1
 					this.spinLeftPressed = value > 0.5f;
-				} else if (comp.getIdentifier() == Identifier.Button.RIGHT_THUMB) { // todo - check
+				} else if (comp.getIdentifier() == Identifier.Button._5) { // r1
 					this.spinRightPressed = value > 0.5f;
-				} else if (comp.getIdentifier() == Identifier.Button.TOP) { // todo - check
+				} else if (comp.getIdentifier() == Identifier.Button._1) { // x
 					this.firePressed = value > 0.5f;
 				}
 			}

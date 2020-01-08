@@ -15,7 +15,7 @@ import com.scs.trickytowers.entity.systems.DrawingSystem;
 public abstract class PhysicalEntity extends Entity implements IDrawable, IGetPosition {
 
 	protected Point tmp = new Point();
-	public Body body;
+	public Body body; // todo - sometimes null
 
 	public PhysicalEntity(Main_TumblyTowers _main, String _name) {
 		super(_main, _name);
@@ -25,7 +25,9 @@ public abstract class PhysicalEntity extends Entity implements IDrawable, IGetPo
 	@Override
 	public void draw(Graphics g, DrawingSystem system) {
 		try {
-		system.drawShape(tmp, g, body);
+			if (body != null) {
+				system.drawShape(tmp, g, body);
+			}
 		} catch (NullPointerException ex) {
 			ex.printStackTrace();
 		}

@@ -76,6 +76,10 @@ public class DrawingSystem {
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setStroke(stroke);
 
+		if (b == null) {
+			return;
+		}
+		
 		Fixture f = b.getFixtureList();
 		if (f == null) {
 			BodyUserData bud = (BodyUserData)b.getUserData();
