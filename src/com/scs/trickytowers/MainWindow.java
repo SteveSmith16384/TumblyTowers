@@ -20,7 +20,8 @@ public class MainWindow extends JFrame {
 			device.setFullScreenWindow(this);
 
 		} else {
-			this.setSize(Statics.WINDOW_WIDTH, Statics.WINDOW_HEIGHT);
+			float frac = (float)Statics.WORLD_WIDTH_LOGICAL / (float)Statics.WORLD_HEIGHT_LOGICAL;
+			this.setSize((int)(Statics.WINDOW_HEIGHT * frac), Statics.WINDOW_HEIGHT);
 		}
 		Statics.LOGICAL_TO_PIXELS = this.getHeight() / Statics.WORLD_HEIGHT_LOGICAL;
 		//Statics.WORLD_WIDTH_LOGICAL = (int)(this.getWidth() / Statics.LOGICAL_TO_PIXELS);

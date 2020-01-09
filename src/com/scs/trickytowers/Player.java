@@ -38,6 +38,7 @@ public class Player {
 			float diff = Math.abs(currentShape.body.getWorldCenter().y - prevShapeY);
 			//Statics.p("Diff=" + diff);
 			if (currentShape.body.getWorldCenter().y < 1 || diff > 0.01f) { // Still moving
+				currentShape.applyDrag();
 				prevShapeY = currentShape.body.getWorldCenter().y;
 				if (currentShape.collided == false) {
 					Vec2 newPos = new Vec2(currentShape.body.getWorldCenter());
@@ -93,8 +94,8 @@ public class Player {
 			return new Rectangle(main, Statics.STD_CELL_SIZE*Functions.rnd(2, 6), Statics.STD_CELL_SIZE, x);
 
 		case 3: // Rectangle*/
-			int w = Functions.rnd(1, 3);
-			int h = Functions.rnd(1, 3);
+			int w = Functions.rnd(1, 4);
+			int h = Functions.rnd(1, 4);
 			return new Rectangle(main, Statics.STD_CELL_SIZE*w, Statics.STD_CELL_SIZE*h, x);
 
 		/*default:

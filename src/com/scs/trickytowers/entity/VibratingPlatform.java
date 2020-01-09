@@ -27,7 +27,7 @@ public class VibratingPlatform extends PhysicalEntity implements IProcessable {
 	@Override
 	public void preprocess(long interpol) {
 		if (timer.hasHit(interpol)) {
-			this.body.applyForceToCenter(new Vec2(-100000, 0)); // scs new
+			//this.body.applyForceToCenter(new Vec2(-100000, 0)); // scs new
 		}		
 	}
 

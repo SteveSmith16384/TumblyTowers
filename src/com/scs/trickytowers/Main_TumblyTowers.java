@@ -58,6 +58,7 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 	private int[] leftPos;
 	private int[] rightPos;
 	private Font font;
+	private long lastCollisionTime = 0;
 
 	private boolean restartLevel = false, createKeyboard1 = false, createKeyboard2 = false;
 	private long restartOn;
@@ -73,7 +74,7 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 		super();
 
 		System.setProperty("net.java.games.input.librarypath", new File("libs/jinput").getAbsolutePath());
-		
+
 		if (Statics.RELEASE_MODE == false) {
 			// Test all sounds
 			File[] files = new File("bin/assets/sfx").listFiles();
@@ -158,11 +159,9 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 			Graphics g = window.BS.getDrawGraphics();
 			g.setFont(font);
 
-			//g.fillRect(0, 0, Statics.WINDOW_WIDTH, Statics.WINDOW_HEIGHT);
 			g.drawImage(this.background, 0, 0, this.window);
 
 			g.setColor(Color.white);
-			//g.drawString(timedMessage.getString(), 20, 50);
 			for (int i=0 ; i<this.log.size() ; i++) {
 				g.drawString(this.log.get(i), 20, 200-(i*20));
 			}
@@ -263,7 +262,7 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 			background = Statics.img_cache.getImage("Jungle Day.jpg", window.getWidth(), window.getHeight());
 			break;
 		}
-		
+
 		// todo - play start sound
 	}
 
@@ -289,7 +288,10 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 
 
 	private void processCollision(Contact contact) {
-		this.playSound("collide.wav");
+		if (lastCollisionTime + 200 < System.currentTimeMillis()) {
+			this.playSound("collide.wav");
+			this.lastCollisionTime = System.currentTimeMillis();
+		}
 
 		Body ba = contact.getFixtureA().getBody();
 		Body bb = contact.getFixtureB().getBody();

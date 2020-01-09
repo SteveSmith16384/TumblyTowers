@@ -14,8 +14,8 @@ public class Statics {
 	public static final int FPS = 30;
 	public static final float STD_CELL_SIZE = 10f;//8f;
 	
-	public static final int WINDOW_WIDTH = 800; // Only used when windowed
-	public static final int WINDOW_HEIGHT = 600; // Only used when windowed
+	//public static final int WINDOW_WIDTH = 800; // Only used when windowed
+	public static final int WINDOW_HEIGHT = 300; // Only used when windowed
 
 	public static final int WORLD_WIDTH_LOGICAL = 400;// = (int)(WINDOW_WIDTH / LOGICAL_TO_PIXELS);
 	public static final int WORLD_HEIGHT_LOGICAL = 300;// = (int)(WINDOW_HEIGHT / LOGICAL_TO_PIXELS);
