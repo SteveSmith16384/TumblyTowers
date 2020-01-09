@@ -15,6 +15,7 @@ public class MP3Player extends Thread {
 	private volatile boolean stop_now = false;
 	public volatile boolean paused = false;
 	private boolean loop;
+	private ClassLoader cl = this.getClass().getClassLoader();
 
 	public MP3Player(String fname, boolean _loop) {
 		super("MP3Player");
@@ -30,7 +31,6 @@ public class MP3Player extends Thread {
 		AudioInputStream din = null;
 		try {
 			do {
-				ClassLoader cl = this.getClass().getClassLoader();
 				InputStream is = cl.getResourceAsStream(mp3_filename);
 				AudioInputStream in = AudioSystem.getAudioInputStream(is);
 				AudioFormat baseFormat = in.getFormat();

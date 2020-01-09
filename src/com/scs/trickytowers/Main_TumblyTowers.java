@@ -62,8 +62,7 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 	private boolean restartLevel = false, createKeyboard1 = false, createKeyboard2 = false;
 	private long restartOn;
 	private Image background;
-	private ArrayList<String> log = new ArrayList<String>();
-	
+	private ArrayList<String> log = new ArrayList<String>();	
 	private SoundCacheThread soundThread;
 
 	public static void main(String[] args) {
@@ -76,13 +75,14 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 
 		System.setProperty("net.java.games.input.librarypath", new File("libs/jinput").getAbsolutePath());
 		
-		this.soundThread = new SoundCacheThread("");//"bin/assets/sfx");
+		this.soundThread = new SoundCacheThread("assets/sfx/");//"bin/assets/sfx");
 
 		if (Statics.RELEASE_MODE == false) {
 			File[] files = new File("bin/assets/sfx").listFiles();
 			for (File file : files) {
-				this.playSound(file.getAbsolutePath());
+				this.playSound(file.getName());
 			}
+			//this.playSound("shapedropped.ogg");
 		}
 
 

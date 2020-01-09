@@ -1,10 +1,9 @@
 package ssmith.audio;
 
-import java.applet.Applet;
 import java.applet.AudioClip;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.Hashtable; 
+
 
 public class SoundCacheThread extends Thread {
 
@@ -54,9 +53,9 @@ public class SoundCacheThread extends Thread {
 				while (this.filenames.size() > 0) {
 					final String filename = this.filenames.remove(0);
 					//AppletMain.p("Playing " + filename);
-					if (filename.endsWith("mp3")) {
+					//if (filename.endsWith("mp3")) {
 						new MP3Player(root + filename, false).start(); // Can't cache mp3
-					} else {
+					/*} else {
 						if (sounds.containsKey(filename) == false) {
 							//ClassLoader cl = this.getClass().getClassLoader();
 							URL url = cl.getResource(root + filename);
@@ -80,7 +79,7 @@ public class SoundCacheThread extends Thread {
 						};
 
 						playsound.start();
-					}
+					}*/
 				}
 			}
 		} catch (Exception ex) {
