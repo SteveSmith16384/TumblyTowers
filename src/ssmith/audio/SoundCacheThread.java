@@ -13,6 +13,7 @@ public class SoundCacheThread extends Thread {
 	private Object lock = new Object();
 	private volatile boolean stop_now = false;
 	private String root;
+	private ClassLoader cl = this.getClass().getClassLoader();
 
 	public SoundCacheThread(String _root) {
 		super("SoundCacheThread");
@@ -42,7 +43,7 @@ public class SoundCacheThread extends Thread {
 		try {
 			while (!stop_now) {
 				synchronized (lock) {
-					// Wait until we are interupted to play a sound
+					// Wait until we are interrupted to play a sound
 					try {
 						lock.wait();
 					} catch (InterruptedException ex) {
@@ -57,7 +58,7 @@ public class SoundCacheThread extends Thread {
 						new MP3Player(root + filename, false).start(); // Can't cache mp3
 					} else {
 						if (sounds.containsKey(filename) == false) {
-							ClassLoader cl = this.getClass().getClassLoader();
+							//ClassLoader cl = this.getClass().getClassLoader();
 							URL url = cl.getResource(root + filename);
 							if (url == null) {
 								url = new URL("file:./" + root + filename);
@@ -65,12 +66,20 @@ public class SoundCacheThread extends Thread {
 							AudioClip clip = Applet.newAudioClip(url);
 							sounds.put(filename, clip);
 						}
-						Thread playsound = new Thread("SFX_Thread") {
+
+						Thread playsound = new Thread("SFX_Thread_" + filename) {
+
 							public void run() {
-								AudioClip clip = sounds.get(filename);
-								clip.play();
-							}};
-							playsound.start();
+								try {
+									AudioClip clip = sounds.get(filename);
+									clip.play();
+								} catch (Exception ex) {
+									ex.printStackTrace();
+								}
+							}
+						};
+
+						playsound.start();
 					}
 				}
 			}

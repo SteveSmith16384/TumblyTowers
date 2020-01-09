@@ -32,11 +32,12 @@ import com.scs.trickytowers.input.KeyboardInput;
 import com.scs.trickytowers.input.PS4Controller;
 
 import net.java.games.input.Component;
+import net.java.games.input.Component.Identifier;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
 import net.java.games.input.Event;
 import net.java.games.input.EventQueue;
-import net.java.games.input.Component.Identifier;
+import ssmith.audio.SoundCacheThread;
 import ssmith.awt.ImageCache;
 import ssmith.lang.Functions;
 import ssmith.util.TSArrayList;
@@ -61,7 +62,9 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 	private boolean restartLevel = false, createKeyboard1 = false, createKeyboard2 = false;
 	private long restartOn;
 	private Image background;
-	private ArrayList<String> log = new ArrayList<String>(); 
+	private ArrayList<String> log = new ArrayList<String>();
+	
+	private SoundCacheThread soundThread;
 
 	public static void main(String[] args) {
 		new Main_TumblyTowers();
@@ -72,13 +75,23 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 		super();
 
 		System.setProperty("net.java.games.input.librarypath", new File("libs/jinput").getAbsolutePath());
+		
+		this.soundThread = new SoundCacheThread("");//"bin/assets/sfx");
+
+		if (Statics.RELEASE_MODE == false) {
+			File[] files = new File("bin/assets/sfx").listFiles();
+			for (File file : files) {
+				this.playSound(file.getAbsolutePath());
+			}
+		}
+
 
 		window = new MainWindow(this);
 
 		try {
 			font = new Font("Helvetica", Font.BOLD, 24);
-			Statics.img_cache = ImageCache.GetInstance(null);
-			Statics.img_cache.c = window;
+			Statics.img_cache = new ImageCache("assets/gfx/");
+			//Statics.img_cache.c = window;
 
 			drawingSystem = new DrawingSystem(this);
 
@@ -439,14 +452,17 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 								this.createPlayer(new PS4Controller(c));
 								this.foundControllers.add(c);
 								this.addLogEntry("Player joined");
-								// todo - log
 							}
 						}
 					}
 				}
 			}
 		}
+	}
 
+
+	public void playSound(String filename) {
+		this.soundThread.playSound(filename);
 	}
 
 }
