@@ -9,19 +9,19 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.SourceDataLine;
 
-public class MP3Player extends Thread {
+public class AudioPlayer extends Thread {
 
-	private String mp3_filename;
+	private String filename;
 	private volatile boolean stop_now = false;
 	public volatile boolean paused = false;
 	private boolean loop;
 	private ClassLoader cl = this.getClass().getClassLoader();
 
-	public MP3Player(String fname, boolean _loop) {
-		super("MP3Player");
+	public AudioPlayer(String fname, boolean _loop) {
+		super(AudioPlayer.class.getSimpleName() + "_" + fname);
 
 		loop = _loop;
-		this.mp3_filename = fname;
+		this.filename = fname;
 
 		this.setDaemon(true);
 	}
@@ -31,7 +31,7 @@ public class MP3Player extends Thread {
 		AudioInputStream din = null;
 		try {
 			do {
-				InputStream is = cl.getResourceAsStream(mp3_filename);
+				InputStream is = cl.getResourceAsStream(filename);
 				AudioInputStream in = AudioSystem.getAudioInputStream(is);
 				AudioFormat baseFormat = in.getFormat();
 				AudioFormat decodedFormat = new AudioFormat(
@@ -59,14 +59,14 @@ public class MP3Player extends Thread {
 					line.drain();
 					line.stop();
 					line.close();
-					din.close();
+					//din.close();
 					in.close();
 				} else {
-					throw new IOException("File '" + this.mp3_filename + "' does not exist");
+					throw new IOException("File '" + this.filename + "' does not exist");
 				}
-			} while (loop);
+			} while (loop && !stop_now);
 		} catch(Exception ex) {
-			System.err.println("Cannot play '" + this.mp3_filename + "': " + ex.getMessage());
+			System.err.println("Cannot play '" + this.filename + "': " + ex.getMessage());
 			ex.printStackTrace();
 		} finally {
 			if(din != null) {

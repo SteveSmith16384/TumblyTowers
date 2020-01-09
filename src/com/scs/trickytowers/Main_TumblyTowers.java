@@ -37,7 +37,7 @@ import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
 import net.java.games.input.Event;
 import net.java.games.input.EventQueue;
-import ssmith.audio.SoundCacheThread;
+import ssmith.audio.AudioPlayer;
 import ssmith.awt.ImageCache;
 import ssmith.lang.Functions;
 import ssmith.util.TSArrayList;
@@ -63,7 +63,6 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 	private long restartOn;
 	private Image background;
 	private ArrayList<String> log = new ArrayList<String>();	
-	private SoundCacheThread soundThread;
 
 	public static void main(String[] args) {
 		new Main_TumblyTowers();
@@ -75,14 +74,12 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 
 		System.setProperty("net.java.games.input.librarypath", new File("libs/jinput").getAbsolutePath());
 		
-		this.soundThread = new SoundCacheThread("assets/sfx/");//"bin/assets/sfx");
-
 		if (Statics.RELEASE_MODE == false) {
+			// Test all sounds
 			File[] files = new File("bin/assets/sfx").listFiles();
 			for (File file : files) {
 				this.playSound(file.getName());
 			}
-			//this.playSound("shapedropped.ogg");
 		}
 
 
@@ -266,6 +263,8 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 			background = Statics.img_cache.getImage("Jungle Day.jpg", window.getWidth(), window.getHeight());
 			break;
 		}
+		
+		// todo - play start sound
 	}
 
 
@@ -290,6 +289,8 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 
 
 	private void processCollision(Contact contact) {
+		this.playSound("collide.wav");
+
 		Body ba = contact.getFixtureA().getBody();
 		Body bb = contact.getFixtureB().getBody();
 
@@ -410,6 +411,7 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 
 
 	public void playerWon(Player player) {
+		this.playSound("success.wav");
 		this.addLogEntry("Player " + player.id_ZB + " has won!");
 		this.restartLevel = true;
 		this.restartOn = System.currentTimeMillis() + 4000;
@@ -462,7 +464,7 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 
 
 	public void playSound(String filename) {
-		this.soundThread.playSound(filename);
+		new AudioPlayer("assets/sfx/" + filename, false).start();
 	}
 
 }

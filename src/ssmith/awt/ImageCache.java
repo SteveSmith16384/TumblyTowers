@@ -16,6 +16,7 @@ public class ImageCache {
 	private Component c;
 	private String cacheDir;
 	private Hashtable<String, BufferedImage> cache;
+	private ClassLoader cl = this.getClass().getClassLoader();
 
 	public ImageCache(String _dir) {
 		super();
@@ -54,7 +55,6 @@ public class ImageCache {
 					return img;
 				}
 
-				ClassLoader cl = this.getClass().getClassLoader();
 				InputStream is = cl.getResourceAsStream(this.cacheDir + filename);
 				if (is != null) {
 					img = ImageIO.read(is);

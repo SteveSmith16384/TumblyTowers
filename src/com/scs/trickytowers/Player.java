@@ -70,9 +70,11 @@ public class Player {
 			}
 		} else {
 			// Drop new shape
-			Statics.p("Dropping new Shape");
+			//Statics.p("Dropping new Shape");
 			currentShape = getRandomShape(main.getShapeStartPosX(id_ZB));
 			main.addEntity(currentShape);
+			main.playSound("shapedropped.ogg");
+
 		}
 	}
 
