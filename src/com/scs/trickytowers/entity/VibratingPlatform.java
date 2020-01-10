@@ -2,7 +2,6 @@ package com.scs.trickytowers.entity;
 
 import java.awt.Color;
 
-import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyType;
 
 import com.scs.trickytowers.BodyUserData;

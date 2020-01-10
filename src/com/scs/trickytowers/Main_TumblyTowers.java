@@ -2,19 +2,15 @@ package com.scs.trickytowers;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.swing.JOptionPane;
 
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
@@ -50,7 +46,7 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 	public World world;
 	public MainWindow window;
 
-	private TSArrayList<Entity> entities;
+	private TSArrayList<Entity> entities = new TSArrayList<Entity>();
 	private List<Controller> foundControllers = new ArrayList<Controller>();
 
 	private long lastCheckTime;
@@ -86,27 +82,102 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 			}
 		}
 
-		GraphicsEnvironment ge = null;
-	    try{
-	      ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-	      ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, this.getClass().getResourceAsStream("/fonts/fantasy.TTF")));
-	    } catch(FontFormatException e){} catch (IOException e){}
-	    
+		try{
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			Font font = Font.createFont(Font.TRUETYPE_FONT, this.getClass().getResourceAsStream("/assets/fonts/SHOWG.TTF"));
+			ge.registerFont(font);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+
 		window = new MainWindow(this);
 
-		try {
-			font = new Font("Helvetica", Font.BOLD, 20);
-			Statics.img_cache = new ImageCache("assets/gfx/");
+		//try {
+		font = new Font("Showcard Gothic", Font.BOLD, 18);
+		Statics.img_cache = new ImageCache("assets/gfx/");
 
-			drawingSystem = new DrawingSystem(this);
+		drawingSystem = new DrawingSystem(this);
 
-			startLevel();
-			this.gameLoop();
+		this.addLogEntry("PRESS FIRE TO JOIN!");
+		this.addLogEntry("PRESS 'R' TO RESTART");
+		this.addLogEntry("Keyboard 1 is W, A, S, D and Space");
+		this.addLogEntry("Keyboard 2 is Arrows and Ctrl");
 
-		} catch (Exception ex) {
+		startLevel();
+		this.gameLoop();
+
+		/*} catch (Exception ex) {
 			ex.printStackTrace();
 			JOptionPane.showMessageDialog(window, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}*/
+
+	}
+
+
+	private void startLevel() {
+		this.entities.clear();// = new TSArrayList<Entity>();
+
+		Vec2 gravity = new Vec2(0f, 10f);
+		world = new World(gravity);
+		world.setContactListener(this);
+
+		leftPos = new int[this.players.size()];
+		rightPos = new int[this.players.size()];
+		float bucketWidth = Statics.WORLD_WIDTH_LOGICAL/7;
+
+		if (this.players.size() > 0) {
+			this.addLogEntry("Starting level!");
+
+			if (this.players.size() == 1) {
+				leftPos[0] = (int)(Statics.WORLD_WIDTH_LOGICAL-bucketWidth)/2;
+				rightPos[0] = (int)(Statics.WORLD_WIDTH_LOGICAL+bucketWidth)/2;
+			} else if (this.players.size() == 2) {
+				leftPos[0] = (int)(bucketWidth/2);
+				rightPos[0] = leftPos[0] + (int)bucketWidth;
+				leftPos[1] = (int)(Statics.WORLD_WIDTH_LOGICAL-bucketWidth-(bucketWidth/2));
+				rightPos[1] = leftPos[1] + (int)bucketWidth;
+			} else if (this.players.size() == 3) {
+				leftPos[0] = (int)(bucketWidth/2);
+				rightPos[0] = leftPos[0] + (int)bucketWidth;
+				leftPos[1] = (int)(Statics.WORLD_WIDTH_LOGICAL-bucketWidth)/2;
+				rightPos[1] = (int)(Statics.WORLD_WIDTH_LOGICAL+bucketWidth)/2;
+				leftPos[2] = (int)(Statics.WORLD_WIDTH_LOGICAL-bucketWidth-(bucketWidth/2));
+				rightPos[2] = leftPos[2] + (int)bucketWidth;
+			}
+
+			// Create avatars
+			for (Player player : this.players) {
+				player.currentShape = null;
+				//leftPos[i-1] = (int)((secWidth*i)-(bucketWidth/2));
+				//rightPos[i-1] = (int)((secWidth*i)+(bucketWidth/2));
+
+				// Create edges
+				/*Edge leftEdge = new Edge(this, this.getLeftBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL/2), this.getLeftBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL-10));
+			this.addEntity(leftEdge);
+
+			Edge rightEdge = new Edge(this, this.getRightBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL-10), this.getRightBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL/2));
+			this.addEntity(rightEdge);*/
+
+				VibratingPlatform v = new VibratingPlatform(this, this.getCentreBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL-20), bucketWidth*0.9f);
+				this.addEntity(v);
+
+				player.vib = v;
+			}
+			// todo - play start sound
 		}
+
+		switch (Statics.rnd.nextInt(3)) {
+		case 0:
+			background = Statics.img_cache.getImage("Castle Sunset.jpg", window.getWidth(), window.getHeight());
+			break;
+		case 1:
+			background = Statics.img_cache.getImage("City Night.jpg", window.getWidth(), window.getHeight());
+			break;
+		case 2:
+			background = Statics.img_cache.getImage("Jungle Day.jpg", window.getWidth(), window.getHeight());
+			break;
+		}
+
 	}
 
 
@@ -170,7 +241,7 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 
 			g.setColor(Color.white);
 			for (int i=0 ; i<this.log.size() ; i++) {
-				g.drawString(this.log.get(i), 20, 200-(i*20));
+				g.drawString(this.log.get(i), 20, 200+(i*22));
 			}
 			/*if (!Statics.RELEASE_MODE) {
 				g.drawString("Num Entities: " + this.entities.size(), 400, 70);
@@ -202,75 +273,6 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 			}
 		}
 		System.exit(0);
-	}
-
-
-	private void startLevel() {
-		this.entities = new TSArrayList<Entity>();
-
-		this.log.clear();
-		this.addLogEntry("PRESS FIRE TO JOIN!");
-		this.addLogEntry("PRESS 'R' TO RESTART");
-		this.addLogEntry("Keyboard 1 is W, A, S, D and Space");
-		this.addLogEntry("Keyboard 2 is Arrows and Ctrl");
-
-		Vec2 gravity = new Vec2(0f, 10f);
-		world = new World(gravity);
-		world.setContactListener(this);
-
-		leftPos = new int[this.players.size()];
-		rightPos = new int[this.players.size()];
-		float bucketWidth = Statics.WORLD_WIDTH_LOGICAL/7;
-
-		if (this.players.size() == 1) {
-			leftPos[0] = (int)(Statics.WORLD_WIDTH_LOGICAL-bucketWidth)/2;
-			rightPos[0] = (int)(Statics.WORLD_WIDTH_LOGICAL+bucketWidth)/2;
-		} else if (this.players.size() == 2) {
-			leftPos[0] = (int)(bucketWidth/2);
-			rightPos[0] = leftPos[0] + (int)bucketWidth;
-			leftPos[1] = (int)(Statics.WORLD_WIDTH_LOGICAL-bucketWidth-(bucketWidth/2));
-			rightPos[1] = leftPos[1] + (int)bucketWidth;
-		} else if (this.players.size() == 3) {
-			leftPos[0] = (int)(bucketWidth/2);
-			rightPos[0] = leftPos[0] + (int)bucketWidth;
-			leftPos[1] = (int)(Statics.WORLD_WIDTH_LOGICAL-bucketWidth)/2;
-			rightPos[1] = (int)(Statics.WORLD_WIDTH_LOGICAL+bucketWidth)/2;
-			leftPos[2] = (int)(Statics.WORLD_WIDTH_LOGICAL-bucketWidth-(bucketWidth/2));
-			rightPos[2] = leftPos[2] + (int)bucketWidth;
-		}
-
-		// Create avatars
-		for (Player player : this.players) {
-			player.currentShape = null;
-			//leftPos[i-1] = (int)((secWidth*i)-(bucketWidth/2));
-			//rightPos[i-1] = (int)((secWidth*i)+(bucketWidth/2));
-
-			// Create edges
-			/*Edge leftEdge = new Edge(this, this.getLeftBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL/2), this.getLeftBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL-10));
-			this.addEntity(leftEdge);
-
-			Edge rightEdge = new Edge(this, this.getRightBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL-10), this.getRightBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL/2));
-			this.addEntity(rightEdge);*/
-
-			VibratingPlatform v = new VibratingPlatform(this, this.getCentreBucketPos(player.id_ZB), (float)(Statics.WORLD_HEIGHT_LOGICAL-20), bucketWidth*0.9f);
-			this.addEntity(v);
-
-			player.vib = v;
-		}
-
-		switch (Statics.rnd.nextInt(3)) {
-		case 0:
-			background = Statics.img_cache.getImage("Castle Sunset.jpg", window.getWidth(), window.getHeight());
-			break;
-		case 1:
-			background = Statics.img_cache.getImage("City Night.jpg", window.getWidth(), window.getHeight());
-			break;
-		case 2:
-			background = Statics.img_cache.getImage("Jungle Day.jpg", window.getWidth(), window.getHeight());
-			break;
-		}
-
-		// todo - play start sound
 	}
 
 
@@ -367,13 +369,13 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 
 	private void createPlayer(IInputDevice input) {
 		if (this.players.size() < 3) {
-			//this.createPlayer(new KeyboardInput(window, KeyboardInput.KEYBOARD1_ID));
 			Player player = new Player(this, input);
 			synchronized (players) {
 				this.players.add(player);
 			}
 			this.restartLevel = true;
 			this.restartOn = 0;
+			this.addLogEntry("Player created for " + input);
 		} else {
 			this.addLogEntry("No room left for more players!");
 		}
