@@ -422,8 +422,12 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 
 
 	public void playerWon(Player player) {
+		if (restartLevel) { // Already got a winner
+			return;
+		}
+		
 		this.playSound("success.wav");
-		this.addLogEntry("Player " + player.id_ZB + " has won!");
+		this.addLogEntry("Player " + (player.id_ZB+1) + " has won!");
 		this.restartLevel = true;
 		this.restartOn = System.currentTimeMillis() + 4000;
 

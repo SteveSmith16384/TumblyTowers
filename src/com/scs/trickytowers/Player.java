@@ -38,7 +38,7 @@ public class Player {
 			float diff = Math.abs(currentShape.body.getWorldCenter().y - prevShapeY);
 			//Statics.p("Diff=" + diff);
 			if (currentShape.body.getWorldCenter().y < 1 || diff > 0.01f) { // Still moving
-				currentShape.applyDrag(this.input.isFirePressed());
+				currentShape.applyDrag(!this.input.isFirePressed());
 				prevShapeY = currentShape.body.getWorldCenter().y;
 				if (currentShape.collided == false) {
 					Vec2 newPos = new Vec2(currentShape.body.getWorldCenter());
