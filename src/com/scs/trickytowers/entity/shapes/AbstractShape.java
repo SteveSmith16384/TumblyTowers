@@ -19,8 +19,6 @@ public abstract class AbstractShape extends PhysicalEntity implements ICollideab
 	protected static final float FRICTION = .9f;
 	protected static final float WEIGHT = 0.01f;
 
-	private static Vec2 ANTI_GRAV = new Vec2(0, -11);
-
 	public boolean collided = false; // Can't move once collided
 
 	public AbstractShape(Main_TumblyTowers _main, String name) {
@@ -59,7 +57,7 @@ public abstract class AbstractShape extends PhysicalEntity implements ICollideab
 	}
 
 
-	public void applyDrag() {
+	public void applyDrag(boolean notReverse) {
 		final float H = 0.5f;
 		
 		Vec2 v = body.getLinearVelocity();
@@ -68,7 +66,7 @@ public abstract class AbstractShape extends PhysicalEntity implements ICollideab
 		float vSqrd = v.lengthSquared();//.dst2(new Vec2());
 
 		//Calculate the magnitude of the drag force
-		float fMag = H*vSqrd;
+		float fMag = H*vSqrd * (notReverse ? -1 : 1);
 
 		//Calculate the drag force vector to apply
 		//We do this by taking the norm of the velocity and negating it to get the direction.
@@ -77,7 +75,7 @@ public abstract class AbstractShape extends PhysicalEntity implements ICollideab
 		fd.normalize();//.*fMag;
 
 		//Finally we communicate this to box2d by calling applyForceToCenter
-		body.applyForceToCenter(fd.mul(-1 * fMag));
+		body.applyForceToCenter(fd.mul(fMag));
 	}
 
 

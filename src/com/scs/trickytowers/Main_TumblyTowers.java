@@ -2,11 +2,14 @@ package com.scs.trickytowers;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -83,13 +86,17 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 			}
 		}
 
-
+		GraphicsEnvironment ge = null;
+	    try{
+	      ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	      ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, this.getClass().getResourceAsStream("/fonts/fantasy.TTF")));
+	    } catch(FontFormatException e){} catch (IOException e){}
+	    
 		window = new MainWindow(this);
 
 		try {
-			font = new Font("Helvetica", Font.BOLD, 24);
+			font = new Font("Helvetica", Font.BOLD, 20);
 			Statics.img_cache = new ImageCache("assets/gfx/");
-			//Statics.img_cache.c = window;
 
 			drawingSystem = new DrawingSystem(this);
 
