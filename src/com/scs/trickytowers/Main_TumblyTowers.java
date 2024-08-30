@@ -98,10 +98,10 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 
 		drawingSystem = new DrawingSystem(this);
 
-		this.addLogEntry("PRESS FIRE TO JOIN!");
-		this.addLogEntry("PRESS 'R' TO RESTART");
-		this.addLogEntry("Keyboard 1 is W, A, S, D and Space");
-		this.addLogEntry("Keyboard 2 is Arrows and Ctrl");
+		this.addLogEntry("Choose a game map now.");
+		this.addLogEntry("Press K and J to select the background.");
+		this.addLogEntry("When you're ready, press SPACE to join!");
+
 
 		startLevel();
 		this.gameLoop();
@@ -261,6 +261,7 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 				}
 			}
 			drawingSystem.endOfDrawing();
+			drawingSystem.paintFixedMenu(g,window);
 			window.BS.show();
 
 			long diff = System.currentTimeMillis() - start;
