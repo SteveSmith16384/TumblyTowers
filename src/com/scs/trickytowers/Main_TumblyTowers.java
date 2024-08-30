@@ -58,8 +58,9 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 	private int[] rightPos;
 	private Font font;
 	private long lastCollisionTime = 0;
+	private int currentBackgroundOption = Statics.rnd.nextInt(3);
 
-	private boolean restartLevel = false, createKeyboard1 = false, createKeyboard2 = false;
+	private boolean restartLevel = false, createKeyboard1 = false, createKeyboard2 = false, menuStage = true;
 	private long restartOn;
 	private Image background;
 	private ArrayList<String> log = new ArrayList<String>();	
@@ -166,7 +167,7 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 			// todo - play start sound
 		}
 
-		switch (Statics.rnd.nextInt(3)) {
+		switch (currentBackgroundOption) {
 		case 0:
 			background = Statics.img_cache.getImage("Castle Sunset.jpg", window.getWidth(), window.getHeight());
 			break;
@@ -404,15 +405,40 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 	public void keyReleased(KeyEvent ke) {
 		if (ke.getKeyCode() == KeyEvent.VK_CONTROL) {
 			this.createKeyboard1 = true;
+			this.menuStage = false;
 		} else if (ke.getKeyCode() == KeyEvent.VK_SPACE) {
 			this.createKeyboard2 = true;
+			this.menuStage = false;
 		} else if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			System.exit(0);
 		} else if (ke.getKeyCode() == KeyEvent.VK_R) {
 			this.restartLevel = true;
 			this.restartOn = 0;
+		}else if (ke.getKeyCode() == KeyEvent.VK_K){
+			if(this.menuStage == true){
+				if(this.currentBackgroundOption == 0){
+					this.currentBackgroundOption= 2;
+					
+				}else{
+					this.currentBackgroundOption -=1;
+				}
+	
+				this.restartLevel = true;
+				this.restartOn = 0;
+			}
+		}else if (ke.getKeyCode() == KeyEvent.VK_L){
+			if(this.menuStage == true){
+				if(this.currentBackgroundOption == 2){
+					this.currentBackgroundOption = 0;
+				}else{
+					this.currentBackgroundOption +=1;
+	
+				}
+				this.restartLevel = true;
+				this.restartOn = 0;
+			}
+			
 		}
-
 	}
 
 	@Override
