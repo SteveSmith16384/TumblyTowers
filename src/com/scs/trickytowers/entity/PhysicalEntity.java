@@ -39,19 +39,6 @@ public abstract class PhysicalEntity extends Entity implements IDrawable, IGetPo
 		return body.getWorldCenter();
 	}
 
-
-	/*public void applyForceToCenter(Vec2 vec) {
-		body.applyForceToCenter(vec);
-
-	}*/
-
-
-	/*public void applyLinearImpulse(Vec2 vec) {
-		body.applyLinearImpulse(vec, Statics.VEC_CENTRE, true);
-
-	}*/
-
-
 	@Override
 	public void cleanup(World world) {
 		try {

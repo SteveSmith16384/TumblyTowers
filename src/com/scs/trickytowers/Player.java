@@ -1,13 +1,10 @@
 package com.scs.trickytowers;
 
-import org.jbox2d.common.Vec2;
-
-import ssmith.lang.Functions;
-
 import com.scs.trickytowers.entity.VibratingPlatform;
 import com.scs.trickytowers.entity.shapes.AbstractShape;
 import com.scs.trickytowers.entity.shapes.Rectangle;
 import com.scs.trickytowers.input.IInputDevice;
+import ssmith.lang.Functions;
 
 public class Player {
 
@@ -78,30 +75,10 @@ public class Player {
 
 		}
 	}
-
-
+	
 	private AbstractShape getRandomShape(float x) {
-		/*int i = Functions.rnd(0, 3);
-		switch (i) {
-		case 0: // Square
-			int z = Functions.rnd(1,  3);
-			return new Rectangle(main, Statics.STD_CELL_SIZE*z, Statics.STD_CELL_SIZE*z, x);
-
-		case 1:
-			return new LShape(main, x, Statics.STD_CELL_SIZE);
-
-		case 2: // Long and thin
-			return new Rectangle(main, Statics.STD_CELL_SIZE*Functions.rnd(2, 6), Statics.STD_CELL_SIZE, x);
-
-		case 3: // Rectangle*/
-			int w = Functions.rnd(1, 4);
-			int h = Functions.rnd(1, 4);
-			return new Rectangle(main, Statics.STD_CELL_SIZE*w, Statics.STD_CELL_SIZE*h, x);
-
-		/*default:
-			throw new RuntimeException("Unknown shape: " + i);
-		}*/
+		int width = Functions.rnd(1, 4);
+		int height = Functions.rnd(1, 4);
+		return new Rectangle(main, Statics.STD_CELL_SIZE * width, Statics.STD_CELL_SIZE * height, x);
 	}
-
-
 }

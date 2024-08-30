@@ -1,7 +1,6 @@
 package com.scs.trickytowers;
 
-import org.jbox2d.collision.shapes.ChainShape;
-import org.jbox2d.collision.shapes.CircleShape;
+
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -11,131 +10,75 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
-import org.jbox2d.dynamics.joints.RevoluteJointDef;
-import org.jbox2d.particle.ParticleGroupDef;
-import org.jbox2d.particle.ParticleType;
+
 
 public class JBox2DFunctions {
 
-	public static Body AddCircle(BodyUserData bud, World world, float centre_x, float centre_y, float rad, 
-			BodyType bodytype, float restitution, float friction, float weight_kgm2) {
-		BodyDef bd = new BodyDef();
-		bd.position.set(centre_x, centre_y);  
-		bd.type = bodytype; //BodyType.DYNAMIC;
-		bd.userData = bud;
-
-		CircleShape cs = new CircleShape();
-		cs.m_radius = rad;  
-
-		FixtureDef fd = new FixtureDef();
-		fd.shape = cs;
-		fd.density = weight_kgm2;
-		fd.friction = friction;//0.3f;
-		fd.restitution = restitution;//0.5f;
-		fd.setUserData(bud);
-
-		Body ball = world.createBody(bd);
-		ball.createFixture(fd);
-		ball.setUserData(bud);
-
-		return ball;
-	}
-
-
-	public static Body AddRectangleTL(BodyUserData name, World world, float x, float y, 
-			float width, float height, BodyType bodytype, float restitution, float friction, float weight_kgm2) {
-		
-		return AddRectangle(name, world, x+(width/2), y+(height/2), width, height, bodytype, restitution, friction, weight_kgm2);
-	}
-	
-	
-	public static Body AddRectangle(BodyUserData bud, World world, float centre_x, float centre_y, float width, float height, 
+	public static Body AddRectangle(BodyUserData bud, World world, float centre_x, float centre_y, float width, float height,
 			BodyType bodytype, float restitution, float friction, float weight_kgm2) {
 		PolygonShape ps = new PolygonShape();
-		ps.setAsBox(width/2,height/2);
+		ps.setAsBox(width / 2, height / 2);
 
 		FixtureDef fd = new FixtureDef();
 		fd.shape = ps;
-		fd.restitution = restitution;
-		fd.friction = friction;
-		fd.density = weight_kgm2;
+
+		// Melhorando os cálculos dos parâmetros
+		fd.restitution = adjustRestitutionForRectangles(restitution);
+		fd.friction = adjustFrictionForRectangles(friction);
+		fd.density = adjustDensityForRectangles(weight_kgm2);
 
 		BodyDef bd = new BodyDef();
 		bd.type = bodytype;
-		bd.position= new Vec2(centre_x, centre_y);
+		bd.position = new Vec2(centre_x, centre_y);
 
 		Body b = world.createBody(bd);
 		Fixture f = b.createFixture(fd);
-		
+
 		f.setUserData(bud);
 		b.setUserData(bud);
 
 		return b;
 	}
 
-
-	public static Body CreateComplexShape(BodyUserData bud, World world, Vec2[] vertices, 
-			BodyType bodytype, float restitution, float friction, float weight_kgm2) {
+	public static Body CreateComplexShape(BodyUserData bud, World world, Vec2[] vertices,
+										  BodyType bodytype, float restitution, float friction, float weight_kgm2) {
 		PolygonShape ps = new PolygonShape();
 		ps.set(vertices, vertices.length);
 
 		FixtureDef fd = new FixtureDef();
 		fd.shape = ps;
-		fd.restitution = restitution;
-		fd.friction = friction;
-		fd.density = weight_kgm2;
+
+		// Melhorando os cálculos dos parâmetros
+		fd.restitution = adjustRestitutionForComplexShapes(restitution);
+		fd.friction = adjustFrictionForComplexShapes(friction);
+		fd.density = adjustDensityForComplexShapes(weight_kgm2);
 
 		BodyDef bd = new BodyDef();
 		bd.type = bodytype;
-		//bd.position= new Vec2(centre_x, centre_y);
 
 		Body b = world.createBody(bd);
 		b.createFixture(fd);
 		b.setUserData(bud);
-		
+
 		return b;
 	}
 
+	public static Body AddEdgeShapeByTL(World world, BodyUserData bud, float x1, float y1, float x2, float y2,
+										BodyType bodyType, float restitution, float friction, float weight_kgm2) {
+		EdgeShape es = new EdgeShape();
+		es.set(new Vec2(0, 0), new Vec2(x2 - x1, y2 - y1));
 
-	public static Body AddEdgeShapeByMiddle(World world, float x1, float y1, float x2, float y2, BodyType bodyType, 
-			float restitution, float friction, float weight_kgm2) {
-		Vec2 centre = new Vec2((x1+x2)/2, (y1+y2)/2);
-		EdgeShape es=new EdgeShape();
-		//SETTING THE POINTS AS OFFSET DISTANCE FROM CENTER
-		es.set(new Vec2(x1-centre.x, y1-centre.y), new Vec2(x2-centre.x, y2-centre.y));
+		FixtureDef fixtureDef = new FixtureDef();
 
-		FixtureDef fixtureDef=new FixtureDef();
-		fixtureDef.density=weight_kgm2;
-		fixtureDef.restitution=restitution;
-		fixtureDef.friction=friction;
-		fixtureDef.shape=es;
-
-		BodyDef bd = new BodyDef();
-		bd.type = bodyType;//BodyType.STATIC;
-		bd.position= centre;// new Vec2((x2-x1)/2, (y2-y1)/2);
-		//bd.userData = name + "_BodyDef";
-
-		Body b = world.createBody(bd);
-		b.createFixture(fixtureDef);
-		//b.setUserData(name);
-		return b;
-	}
-
-
-	public static Body AddEdgeShapeByTL(World world, BodyUserData bud, float x1, float y1, float x2, float y2, 
-			BodyType bodyType, float restitution, float friction, float weight_kgm2) {
-		EdgeShape es=new EdgeShape();
-		es.set(new Vec2(0, 0), new Vec2(x2-x1, y2-y1));
-
-		FixtureDef fixtureDef=new FixtureDef();
-		fixtureDef.density=weight_kgm2;
-		fixtureDef.restitution = restitution;//0.4f;
-		fixtureDef.friction = friction;
+		// Melhorando os cálculos dos parâmetros
+		fixtureDef.density = adjustDensityForEdges(weight_kgm2);
+		fixtureDef.restitution = adjustRestitutionForEdges(restitution);
+		fixtureDef.friction = adjustFrictionForEdges(friction);
 		fixtureDef.shape = es;
 
 		BodyDef bd = new BodyDef();
 		bd.type = bodyType;
-		bd.position= new Vec2(x1, y1);
+		bd.position = new Vec2(x1, y1);
 
 		Body b = world.createBody(bd);
 		b.createFixture(fixtureDef);
@@ -143,95 +86,48 @@ public class JBox2DFunctions {
 		return b;
 	}
 
-
-	public static Body AddChainShape(World world, BodyUserData name, float x, float y, Vec2 vertices[], 
-			BodyType bodyType, float restitution, float friction, float weight_kgm2) {
-		
-		ChainShape es = new ChainShape();
-		es.createChain(vertices, vertices.length);
-
-		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.density=weight_kgm2;
-		fixtureDef.restitution = restitution;//0.4f;
-		fixtureDef.friction = friction;//0.4f;
-		fixtureDef.shape = es;
-
-		BodyDef bd = new BodyDef();
-		bd.type = bodyType;
-		bd.position= new Vec2(x, y);
-		//bd.userData = name + "_BodyDef";
-
-		Body b = world.createBody(bd);
-		b.createFixture(fixtureDef);
-		b.setUserData(name);
-		return b;
+	private static float adjustDensityForEdges(float density) {
+		// Ajuste para bordas: baixa densidade para simular limites estáticos ou rígidos
+		return Math.max(0.1f, Math.min(density, 0.5f)); // Valores entre 0.1 e 0.5 para bordas
 	}
 
-
-	/*
-	 * Giving rope too many segments compared to length makes it too elastic
-	 */
-	public static void AddRopeShape(World world, BodyUserData bud, Body anchorBodyStart, Body anchorBodyEnd, float tot_len, int num_segments, 
-			float restitution, float friction, float weight_kgm2) {
-		final float len = tot_len/num_segments;
-
-		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(0.125f, len);
-
-		FixtureDef fd = new FixtureDef();
-		fd.shape = shape;
-		fd.restitution = restitution;//.1f;
-		fd.friction = friction;//0.2f;
-		fd.density = weight_kgm2;//1f; // Was 0.1, made rope strtech like crazy
-		fd.filter.categoryBits = 0x0001;
-		fd.filter.maskBits = 0xFFFF & ~0x0002;
-
-		//List<RevoluteJointDef> jointlist = new ArrayList<RevoluteJointDef>();
-		
-		Body prev = anchorBodyStart;
-		for (int i = 0; i < num_segments; i++) {
-			BodyDef bd = new BodyDef();
-			bd.type = BodyType.DYNAMIC;
-			bd.position.set(prev.getPosition().x, prev.getPosition().y+(len*2));
-			
-			Body body = world.createBody(bd);
-			body.createFixture(fd);
-			body.setUserData(bud);
-			//list.add(body);
-
-			RevoluteJointDef jd = new RevoluteJointDef();
-			jd.collideConnected = false;
-			jd.initialize(prev, body, new Vec2(prev.getPosition().x, prev.getPosition().y+(len)));
-			world.createJoint(jd);
-			//jointlist.add(jd);
-			prev = body;
-		}
-
-		RevoluteJointDef jd = new RevoluteJointDef();
-		jd.collideConnected = false;
-		jd.initialize(prev, anchorBodyEnd, new Vec2(prev.getPosition().x, prev.getPosition().y+(len)));
-		world.createJoint(jd);
-
-		//return jointlist;
+	private static float adjustRestitutionForEdges(float restitution) {
+		// Ajuste de restituição: valores baixos para simular bordas que não rebatem
+		return Math.max(0.0f, Math.min(restitution, 0.3f)); // Valores entre 0.0 e 0.3
 	}
-	
 
-	public static void AddWater(World world, Vec2 centre) {
-		// Water
-		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(40, 8, centre, 0);
-		ParticleGroupDef pd = new ParticleGroupDef();
-		pd.flags = ParticleType.b2_tensileParticle;// | ParticleType.b2_viscousParticle;
-		pd.shape = shape;
-		pd.strength = .01f;
-
-		world.createParticleGroup(pd);
-		world.setParticleRadius(.5f);
-		//world.setParticleDamping(.5f);
-		world.setParticleDensity(1f);
-		//world.setParticleGravityScale(2f);
-		//world.setpa
+	private static float adjustFrictionForEdges(float friction) {
+		// Ajuste de fricção: fricção média-alta para bordas
+		return Math.max(0.4f, Math.min(friction, 0.8f)); // Valores entre 0.4 e 0.8
 	}
-	
-	
+
+	private static float adjustDensityForRectangles(float density) {
+		// Ajuste para retângulos: densidade média para representar blocos sólidos ou móveis
+		return Math.max(0.5f, Math.min(density, 2.0f)); // Valores entre 0.5 e 2.0
+	}
+
+	private static float adjustRestitutionForRectangles(float restitution) {
+		// Ajuste de restituição: valores médios-baixos para simular objetos que não quicam muito
+		return Math.max(0.1f, Math.min(restitution, 0.4f)); // Valores entre 0.1 e 0.4
+	}
+
+	private static float adjustFrictionForRectangles(float friction) {
+		// Ajuste de fricção: fricção média para garantir resistência ao deslizamento
+		return Math.max(0.3f, Math.min(friction, 0.7f)); // Valores entre 0.3 e 0.7
+	}
+
+	private static float adjustDensityForComplexShapes(float density) {
+		// Ajuste para formas complexas: densidade média a alta para manter estabilidade
+		return Math.max(0.8f, Math.min(density, 2.5f)); // Valores entre 0.8 e 2.5
+	}
+
+	private static float adjustRestitutionForComplexShapes(float restitution) {
+		// Ajuste de restituição: valores médios para permitir algum "quique", dependendo da forma
+		return Math.max(0.1f, Math.min(restitution, 0.6f)); // Valores entre 0.1 e 0.6
+	}
+
+	private static float adjustFrictionForComplexShapes(float friction) {
+		// Ajuste de fricção: fricção variável para diferentes tipos de superfícies complexas
+		return Math.max(0.3f, Math.min(friction, 0.7f)); // Valores entre 0.3 e 0.7
+	}
 }
