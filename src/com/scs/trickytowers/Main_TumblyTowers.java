@@ -118,7 +118,7 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 	private void startLevel() {
 		this.entities.clear();// = new TSArrayList<Entity>();
 
-		Vec2 gravity = new Vec2(0f, 10f);
+		Vec2 gravity = new Vec2(0f, 9.81f);
 		world = new World(gravity);
 		world.setContactListener(this);
 
