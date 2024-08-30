@@ -188,6 +188,9 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 		final int positionIterations = 4;//3;//2;
 
 		while (window.isVisible()) {
+
+			window.checkBufferStrategy();
+
 			long start = System.currentTimeMillis();
 
 			this.checkForControllers();
