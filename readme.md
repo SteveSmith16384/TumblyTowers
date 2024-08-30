@@ -2,45 +2,44 @@
 
 ![ss1.png](http://i.imgur.com/CuponTl.png)
 
-by Stephen Carlyle-Smith (https://twitter.com/stephencsmith)
+by Stephen Carlyle-Smith (<https://twitter.com/stephencsmith>)
 
 [Youtube vid](https://www.youtube.com/watch?v=uFJp9MAAa4Q)
 
-
 ### CONTROLS
+
 Keyboard 1 - Arrow keys and Ctrl
 Keyboard 2 - W, A, S, D and Space
 Gamepads - Left joystick and D-Pad
 
 Press fire to join the game!  This game can handle up to 3 players.
 
-
 ### OBJECTIVE
+
 Be the first to build a tower to above the finish line.
 
+### FEATURES
 
-### FEATURES!
 * Realistic physics using JBox2D
 * Up to 3 players, using keyboard or gamepads
 * Runs on any PC regardless of graphics card
 * Code uses an entity system
 
-
 ### LICENCE
+
 All assets and code are licenced under MIT.
 
-
 ### DEVELOPING
+
 * Compile it by running compile.bat.  Once compiled, you can run it with run.bat.
 
-
 ### CREDITS
-* Gamepad Code thanks to Marcel Schoen (https://github.com/marcelschoen/gamepad4j)
+
+* Gamepad Code thanks to Marcel Schoen (<https://github.com/marcelschoen/gamepad4j>)
 * Uses JBox2D
-* Background gfx from https://opengameart.org/content/nine-cartoon-backdrops
+* Background gfx from <https://opengameart.org/content/nine-cartoon-backdrops>
 
 Thanks for playing!
 
 Stephen
-https://twitter.com/stephencsmith
-
+<https://twitter.com/stephencsmith>
