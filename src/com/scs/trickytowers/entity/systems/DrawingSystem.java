@@ -28,7 +28,7 @@ public class DrawingSystem {
 
 	public DrawingSystem(Main_TumblyTowers _game) {
 		game = _game;
-		stroke = new BasicStroke(4);
+		stroke = new BasicStroke(1, 0, 0 , 1000);
 	}
 
 
