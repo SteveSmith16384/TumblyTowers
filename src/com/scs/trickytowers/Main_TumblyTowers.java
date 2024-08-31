@@ -58,8 +58,9 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 	private int[] rightPos;
 	private Font font;
 	private long lastCollisionTime = 0;
+	private int currentBackgroundOption = Statics.rnd.nextInt(3);
 
-	private boolean restartLevel = false, createKeyboard1 = false, createKeyboard2 = false;
+	private boolean restartLevel = false, createKeyboard1 = false, createKeyboard2 = false, menuStage = true;
 	private long restartOn;
 	private Image background;
 	private ArrayList<String> log = new ArrayList<String>();	
@@ -98,10 +99,10 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 
 		drawingSystem = new DrawingSystem(this);
 
-		this.addLogEntry("PRESS FIRE TO JOIN!");
-		this.addLogEntry("PRESS 'R' TO RESTART");
-		this.addLogEntry("Keyboard 1 is W, A, S, D and Space");
-		this.addLogEntry("Keyboard 2 is Arrows and Ctrl");
+		this.addLogEntry("Choose a game map now.");
+		this.addLogEntry("Press K and J to select the background.");
+		this.addLogEntry("When you're ready, press SPACE to join!");
+
 
 		startLevel();
 		this.gameLoop();
@@ -117,7 +118,7 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 	private void startLevel() {
 		this.entities.clear();// = new TSArrayList<Entity>();
 
-		Vec2 gravity = new Vec2(0f, 10f);
+		Vec2 gravity = new Vec2(0f, 9.81f);
 		world = new World(gravity);
 		world.setContactListener(this);
 
@@ -166,7 +167,7 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 			// todo - play start sound
 		}
 
-		switch (Statics.rnd.nextInt(3)) {
+		switch (currentBackgroundOption) {
 		case 0:
 			background = Statics.img_cache.getImage("Castle Sunset.jpg", window.getWidth(), window.getHeight());
 			break;
@@ -188,6 +189,9 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 		final int positionIterations = 4;//3;//2;
 
 		while (window.isVisible()) {
+
+			window.checkBufferStrategy();
+
 			long start = System.currentTimeMillis();
 
 			this.checkForControllers();
@@ -261,6 +265,7 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 				}
 			}
 			drawingSystem.endOfDrawing();
+			drawingSystem.paintFixedMenu(g,window);
 			window.BS.show();
 
 			long diff = System.currentTimeMillis() - start;
@@ -404,15 +409,40 @@ public class Main_TumblyTowers implements ContactListener, KeyListener {
 	public void keyReleased(KeyEvent ke) {
 		if (ke.getKeyCode() == KeyEvent.VK_CONTROL) {
 			this.createKeyboard1 = true;
+			this.menuStage = false;
 		} else if (ke.getKeyCode() == KeyEvent.VK_SPACE) {
 			this.createKeyboard2 = true;
+			this.menuStage = false;
 		} else if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			System.exit(0);
 		} else if (ke.getKeyCode() == KeyEvent.VK_R) {
 			this.restartLevel = true;
 			this.restartOn = 0;
+		}else if (ke.getKeyCode() == KeyEvent.VK_K){
+			if(this.menuStage == true){
+				if(this.currentBackgroundOption == 0){
+					this.currentBackgroundOption= 2;
+					
+				}else{
+					this.currentBackgroundOption -=1;
+				}
+	
+				this.restartLevel = true;
+				this.restartOn = 0;
+			}
+		}else if (ke.getKeyCode() == KeyEvent.VK_L){
+			if(this.menuStage == true){
+				if(this.currentBackgroundOption == 2){
+					this.currentBackgroundOption = 0;
+				}else{
+					this.currentBackgroundOption +=1;
+	
+				}
+				this.restartLevel = true;
+				this.restartOn = 0;
+			}
+			
 		}
-
 	}
 
 	@Override

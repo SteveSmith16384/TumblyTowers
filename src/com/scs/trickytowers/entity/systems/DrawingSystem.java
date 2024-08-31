@@ -2,6 +2,8 @@ package com.scs.trickytowers.entity.systems;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -17,6 +19,7 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
 
 import com.scs.trickytowers.BodyUserData;
+import com.scs.trickytowers.MainWindow;
 import com.scs.trickytowers.Main_TumblyTowers;
 import com.scs.trickytowers.Statics;
 
@@ -28,7 +31,7 @@ public class DrawingSystem {
 
 	public DrawingSystem(Main_TumblyTowers _game) {
 		game = _game;
-		stroke = new BasicStroke(4);
+		stroke = new BasicStroke(1, 0, 0 , 1000);
 	}
 
 
@@ -163,6 +166,39 @@ public class DrawingSystem {
 
 		}
 	}
+
+	public void paintFixedMenu(java.awt.Graphics g, MainWindow m) {
+		Font fontMenu = new Font("Showcard Gothic", Font.PLAIN, 12);
+		g.setFont(fontMenu);
+		g.setColor(Color.WHITE);
+	
+		// Definindo o texto do menu
+		String[] menuLines = {
+			"[R] - Restart  [K - L] - Change Background  |  [W, A, S, D, SPACE] - Player 1  |  [Arrow Keys, Ctrl] - Player 2",
+			"[ESQ] - EXIT"
+		};
+	
+		int lineSpacing = 5;
+	
+		// Tamanho da Tela
+		int screenWidth = m.getWidth();
+		int screenHeight = m.getHeight();
+	
+		// Desenha cada linha do menu
+		FontMetrics metrics = g.getFontMetrics(fontMenu);
+		int y = screenHeight - metrics.getHeight() - 10; // Alinhado no final da tela com margem de 10 pixels da borda
+	
+		for (String line : menuLines) {
+			// Calcula a largura do texto para centralizar
+			int textWidth = metrics.stringWidth(line);
+			int x = (screenWidth - textWidth) / 2; // Centraliza horizontalmente
+	
+			// Desenha a linha do menu
+			g.drawString(line, x, y);
+			y += metrics.getHeight() + lineSpacing; // Move para a próxima linha
+		}
+	}
+	
 
 	/*
 	private void DrawParticles(Graphics g, World world, Vec2 cam_centre) {
